@@ -1,0 +1,11 @@
+name: "Azure Machine Learning Compute Action"
+description: "Connect to or create a Compute Target to your Azure Machine Learning Workspace with this GitHub Action"
+author: "Microsoft"
+inputs:
+  parametersFile:
+    description: "JSON file including the parameters of the compute."
+    required: true
+    default: "compute.json"
+runs:
+  using: "docker"
+  image: "Dockerfile"
