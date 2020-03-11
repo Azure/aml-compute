@@ -11,7 +11,7 @@ from msrest.exceptions import AuthenticationError
 def main():
     # Loading input values
     print("::debug::Loading input values")
-    parameters_file = os.environ.get("INPUT_PARAMETERSFILE", default="workspace.json")
+    parameters_file = os.environ.get("INPUT_PARAMETERSFILE", default="compute.json")
     azure_credentials = os.environ.get("INPUT_AZURECREDENTIALS", default="{}")
     azure_credentials = json.loads(azure_credentials)
 
@@ -26,20 +26,20 @@ def main():
         return
 
     # Loading Workspace
+    print("::debug::Loading AML Workspace")
     sp_auth = ServicePrincipalAuthentication(
         tenant_id=azure_credentials.get("tenantId", ""),
         service_principal_id=azure_credentials.get("clientId", ""),
         service_principal_password=azure_credentials.get("clientSecret", "")
     )
+    config_file_path = os.environ.get("GITHUB_WORKSPACE", default=".aml")
+    config_file_name = "aml_arm_config.json"
     try:
-        print("::debug::Loading existing Workspace")
-        ws = Workspace.get(
-            name=parameters.get("name", None),
-            subscription_id=azure_credentials.get("subscriptionId", ""),
-            resource_group=parameters.get("resourceGroup", None),
-            auth=sp_auth
-        )
-        print("::debug::Successfully loaded existing Workspace")
+        ws = Workspace.from_config(
+                path=config_file_path,
+                _file_name=config_file_name,
+                auth=sp_auth
+            )
     except AuthenticationException as exception:
         print(f"::error::Could not retrieve user token. Please paste output of `az ad sp create-for-rbac --name <your-sp-name> --role contributor --scopes /subscriptions/<your-subscriptionId>/resourceGroups/<your-rg> --sdk-auth` as value of secret variable: AZURE_CREDENTIALS: {exception}")
         return
@@ -49,9 +49,7 @@ def main():
     except AdalError as exception:
         print(f"::error::Active Directory Authentication Library Error: {exception}")
         return
-    except ProjectSystemException as exception:
-        print(f"::error::Workspace authorizationfailed: {exception}")
-        return
+    
 
     # TODO: Create compute if not existing.
     try:
