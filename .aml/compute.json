@@ -1,38 +1,15 @@
-"compute_target": {
-    "compute_target_to_use_for_training": "compute-target-name",
-    "training": {
-        "amlcompute":{
-            "name": "my-cluster",
-            "vm_size": "STANDARD_D2_V2",
-            "vm_priority": "dedicated",
-            "min_nodes": 0,
-            "max_nodes": 4,
-            "idle_seconds_before_scaledown": "300",
-            "vnet_resource_group_name": null,
-            "vnet_name": null,
-            "subnet_name": null,
-            "admin_username": null,
-            "admin_user_password": null,
-            "admin_user_ssh_key": null,
-            "tags": {
-                "Creator": "GitHub Actions"
-            },
-            "description": "AMLCompute for GitHub Actions"
-        },
-        "dsvm":{
-            "name": "my-vm",
-            "vm_size": "Standard_D2_v2",
-            "location": null,
-            "ssh_port": null
-        },
-        "remotecompute":{
-            "name": "my-remote-vm",
-            "use_ssh_auth": false,
-            "address": "",
-            "username": "",
-            "password": null,
-            "ssh_port": 22,
-            "private_key_file": null,
-            "private_key_passphrase": null
-        }
-    }
+{
+    "name": "mycluster",
+    "compute_type": "amlcluster",
+    "vm_size": "STANDARD_D2_V2",
+    "vm_priority": "dedicated",
+    "min_nodes": 0,
+    "max_nodes": 4,
+    "idle_seconds_before_scaledown": "300",
+    "vnet_resource_group_name": null,
+    "vnet_name": null,
+    "subnet_name": null,
+    "admin_username": null,
+    "admin_user_password": null,
+    "admin_user_ssh_key": null
+}
