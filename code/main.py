@@ -1,7 +1,9 @@
-import os, json
+import os
+import json
+
 from azureml.core import Workspace
-from azureml.core.compute import ComputeTarget, AmlCompute
-from azureml.exceptions import ComputeTargetException, AuthenticationException, ProjectSystemException
+from azureml.core.compute import ComputeTarget
+from azureml.exceptions import ComputeTargetException, AuthenticationException
 from azureml.core.authentication import ServicePrincipalAuthentication
 from adal.adal_error import AdalError
 from msrest.exceptions import AuthenticationError
@@ -40,10 +42,10 @@ def main():
     config_file_name = "aml_arm_config.json"
     try:
         ws = Workspace.from_config(
-                path=config_file_path,
-                _file_name=config_file_name,
-                auth=sp_auth
-            )
+            path=config_file_path,
+            _file_name=config_file_name,
+            auth=sp_auth
+        )
     except AuthenticationException as exception:
         print(f"::error::Could not retrieve user token. Please paste output of `az ad sp create-for-rbac --name <your-sp-name> --role contributor --scopes /subscriptions/<your-subscriptionId>/resourceGroups/<your-rg> --sdk-auth` as value of secret variable: AZURE_CREDENTIALS: {exception}")
         return
@@ -53,7 +55,7 @@ def main():
     except AdalError as exception:
         print(f"::error::Active Directory Authentication Library Error: {exception}")
         return
-    
+
     # Loading compute target
     try:
         print("::debug::Loading existing compute target")
@@ -61,7 +63,7 @@ def main():
             workspace=ws,
             name=parameters.get("name", None)
         )
-    except ComputeTargetException as exception:
+    except ComputeTargetException:
         print("::debug::Could not find existing compute target with provided name")
         print("::debug::Creating new compute target")
 
