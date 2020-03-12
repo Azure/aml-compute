@@ -2,7 +2,7 @@
 
 ## Usage
 
-Description.
+Description. 
 
 ### Example workflow
 
