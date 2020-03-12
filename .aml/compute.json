@@ -6,10 +6,10 @@
     "min_nodes": 0,
     "max_nodes": 4,
     "idle_seconds_before_scaledown": "300",
-    "vnet_resource_group_name": null,
-    "vnet_name": null,
-    "subnet_name": null,
-    "admin_username": null,
-    "admin_user_password": null,
-    "admin_user_ssh_key": null
+    "vnet_resource_group_name": "",
+    "vnet_name": "",
+    "subnet_name": "",
+    "admin_username": "",
+    "admin_user_password": "",
+    "admin_user_ssh_key": ""
 }
