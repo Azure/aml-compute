@@ -1,5 +1,6 @@
 from azureml.core.compute import ComputeTarget, AmlCompute, AksCompute
 
+
 def create_aml_cluster(workspace, parameters):
     print("::debug::Creating aml cluster configuration")
     aml_config = AmlCompute.provisioning_configuration(
@@ -12,13 +13,13 @@ def create_aml_cluster(workspace, parameters):
         description="AML Cluster created by Azure/aml-compute GitHubb Action",
         remote_login_port_public_access=parameters.get("remote_login_port_public_access", "NotSpecified")
     )
-    
+
     print("::debug::Adding VNET settings to configuration if all required settings were provided")
     if parameters.get("vnet_resource_group_name", None) and parameters.get("vnet_name", None) and parameters.get("subnet_name", None):
         aml_config.vnet_resourcegroup_name = parameters.get("vnet_resource_group_name", None)
         aml_config.vnet_name = parameters.get("vnet_name", None)
         aml_config.subnet_name = parameters.get("subnet_name", None)
-    
+
     print("::debug::Adding credentials to configuration if all required settings were provided")
     if parameters.get("admin_username", None) and parameters.get("admin_user_password", None):
         aml_config.admin_username = parameters.get("admin_username", None)
