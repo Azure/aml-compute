@@ -5,7 +5,7 @@ from azureml.exceptions import ComputeTargetException, AuthenticationException, 
 from azureml.core.authentication import ServicePrincipalAuthentication
 from adal.adal_error import AdalError
 from msrest.exceptions import AuthenticationError
-from utils import create_aml_cluster
+from utils import create_aml_cluster, create_aks_cluster
 
 
 def main():
@@ -61,6 +61,7 @@ def main():
             workspace=ws,
             name=parameters.get("name", None)
         )
+        print("::debug::Found compute target with same name. Not updating the compute target.")
     except ComputeTargetException as exception:
         print("::debug::Could not find existing compute target with provided name")
         print("::debug::Creating new compute target")
@@ -70,6 +71,11 @@ def main():
             compute = create_aml_cluster(
                 workspace=ws,
                 parameters=parameters
+            )
+        if compute_type == "akscluster":
+            compute = create_aks_cluster(
+                workspace=ws,
+                pareameters=parameters
             )
         else:
             print(f"::error::Compute Type '{compute_type}' is not supported")

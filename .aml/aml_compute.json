@@ -1,0 +1,16 @@
+{
+    "name": "<your-cluster-name>",
+    "compute_type": "amlcluster",
+    "vm_size": "STANDARD_D2_V2",
+    "vm_priority": "<'dedicated' or 'lowpriority'>",
+    "min_nodes": 0,
+    "max_nodes": 4,
+    "idle_seconds_before_scaledown": 300,
+    "vnet_resource_group_name": "<your-vnet-resource-group-name>",
+    "vnet_name": "<your-vnet-name>",
+    "subnet_name": "<your-subnet-name>",
+    "admin_username": "<your-admin-username>",
+    "admin_user_password": "<your-admin-user-password>",
+    "admin_user_ssh_key": "<your-admin-user-ssh-key>",
+    "remote_login_port_public_access": "<'NotSpecified', 'Enabled' or 'Disabled'>"
+}
