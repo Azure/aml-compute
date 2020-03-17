@@ -57,18 +57,18 @@ def create_aks_cluster(workspace, parameters):
         aks_config.vnet_resourcegroup_name = parameters.get("vnet_resource_group_name", None)
         aks_config.vnet_name = parameters.get("vnet_name", None)
         aks_config.subnet_name = parameters.get("subnet_name", None)
-    
+
     print("::debug::Adding SSL settings to configuration if all required settings were provided")
     if parameters.get("ssl_cname", None) and parameters.get("ssl_cert_pem_file", None) and parameters.get("ssl_key_pem_file", None):
         aks_config.ssl_cname = parameters.get("ssl_cname", None)
         aks_config.ssl_cert_pem_file = parameters.get("ssl_cert_pem_file", None)
         aks_config.ssl_key_pem_file = parameters.get("ssl_key_pem_file", None)
-    
+
     print("::debug::Adding load balancer settings to configuration if all required settings were provided")
     if parameters.get("load_balancer_type", None) == "InternalLoadBalancer" and parameters.get("load_balancer_subnet", None):
         aks_config.load_balancer_type = parameters.get("load_balancer_type", None)
         aks_config.load_balancer_subnet = parameters.get("load_balancer_subnet", None)
-    
+
     print("::debug::Creating compute target")
     aks_cluster = ComputeTarget.create(
         workspace=workspace,
