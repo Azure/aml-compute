@@ -7,7 +7,7 @@ from azureml.exceptions import ComputeTargetException, AuthenticationException
 from azureml.core.authentication import ServicePrincipalAuthentication
 from adal.adal_error import AdalError
 from msrest.exceptions import AuthenticationError
-from utils import create_aml_cluster, create_aks_cluster
+from utils import create_aml_cluster, create_aks_cluster, AMLConfigurationException, AMLComputeException
 
 
 def main():
@@ -19,7 +19,7 @@ def main():
         azure_credentials = json.loads(azure_credentials)
     except ValueError:
         print("::error::Please paste output of `az ad sp create-for-rbac --name <your-sp-name> --role contributor --scopes /subscriptions/<your-subscriptionId>/resourceGroups/<your-rg> --sdk-auth` as value of secret variable: AZURE_CREDENTIALS")
-        return
+        raise AMLConfigurationException(f"Incorrect or poorly formed output from azure credentials saved in AZURE_CREDENTIALS secret. See setup in https://github.com/Azure/aml-workspace/blob/master/README.md")
 
     # Loading parameters file
     print("::debug::Loading parameters file")
@@ -29,7 +29,7 @@ def main():
             parameters = json.load(f)
     except FileNotFoundError:
         print(f"::error::Could not find parameter file in {parameters_file_path}. Please provide a parameter file in your repository (e.g. .aml/workspace.json).")
-        return
+        raise AMLConfigurationException(f"Could not find parameter file in {parameters_file_path}. Please provide a parameter file in your repository (e.g. .ml/.azure/workspace.json).")
 
     # Loading Workspace
     print("::debug::Loading AML Workspace")
@@ -48,13 +48,13 @@ def main():
         )
     except AuthenticationException as exception:
         print(f"::error::Could not retrieve user token. Please paste output of `az ad sp create-for-rbac --name <your-sp-name> --role contributor --scopes /subscriptions/<your-subscriptionId>/resourceGroups/<your-rg> --sdk-auth` as value of secret variable: AZURE_CREDENTIALS: {exception}")
-        return
+        raise AuthenticationException
     except AuthenticationError as exception:
         print(f"::error::Microsoft REST Authentication Error: {exception}")
-        return
+        raise AuthenticationException
     except AdalError as exception:
         print(f"::error::Active Directory Authentication Library Error: {exception}")
-        return
+        raise AdalError
 
     # Loading compute target
     try:
@@ -88,7 +88,7 @@ def main():
     print("::debug::Checking state of compute target")
     if compute.provisioning_state != "Succeeded":
         print(f"::error:: Deployment of compute target '{compute.name}' failed with state '{compute.provisioning_state}'")
-        return
+        raise AMLComputeException(f"Deployment of compute target '{compute.name}' failed with state '{compute.provisioning_state}'")
     print("::debug::Successfully finished Azure Machine Learning Compute Action")
 
 
