@@ -55,7 +55,7 @@ def main():
     except AdalError as exception:
         print(f"::error::Active Directory Authentication Library Error: {exception}")
         raise AdalError
-    
+
     required_parameters_provided(
         parameters=parameters,
         keys=["name", "compute_type"]
