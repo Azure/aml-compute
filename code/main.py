@@ -106,15 +106,17 @@ def main():
         print("::debug::Creating new compute target")
         compute_type = parameters.get("compute_type", "")
         if compute_type == "amlcluster":
-            compute = create_aml_cluster(
+            compute_target = create_aml_cluster(
                 workspace=ws,
                 parameters=parameters
             )
+            print(f"::debug::Successfully created AML cluster: {compute_target.serialize()}")
         if compute_type == "akscluster":
-            compute = create_aks_cluster(
+            compute_target = create_aks_cluster(
                 workspace=ws,
                 parameters=parameters
             )
+            print(f"::debug::Successfully created AKS cluster: {compute_target.serialize()}")
         else:
             print(f"::error::Compute type '{compute_type}' is not supported")
             raise AMLConfigurationException(f"Compute type '{compute_type}' is not supported.")
