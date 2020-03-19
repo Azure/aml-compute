@@ -1,14 +1,52 @@
 from azureml.core.compute import ComputeTarget, AmlCompute, AksCompute
+from azureml.exceptions import ComputeTargetException
+
+
+class AMLConfigurationException(Exception):
+    pass
+
+
+def required_parameters_provided(parameters, keys, message="Required parameter(s) not found in your parameters file. Please provide a value for the following key(s): "):
+    missing_keys = []
+    for key in keys:
+        if key not in parameters:
+            err_msg = f"{message} {key}"
+            print(f"::error::{err_msg}")
+            missing_keys.append(key)
+    if len(missing_keys) > 0:
+        raise AMLConfigurationException(f"{message} {missing_keys}")
+
+
+def create_compute_target(workspace, name, config):
+    # Creating compute target
+    print("::debug::Creating compute target")
+    try:
+        compute_target = ComputeTarget.create(
+            workspace=workspace,
+            name=name,
+            provisioning_configuration=config
+        )
+        compute_target.wait_for_completion(show_output=True)
+    except ComputeTargetException as exception:
+        print(f"::error::Could not create compute target with specified parameters: {exception}")
+        raise AMLConfigurationException(f"Could not create compute target with specified parameters. Please review the provided parameters.")
+
+    # Checking state of compute target
+    print("::debug::Checking state of compute target")
+    if compute_target.provisioning_state != "Succeeded":
+        print(f"::error::Deployment of compute target '{compute_target.name}' failed with state '{compute_target.provisioning_state}'. Please delete the compute target manually and retry.")
+        raise AMLConfigurationException(f"Deployment of compute target '{compute_target.name}' failed with state '{compute_target.provisioning_state}'. Please delete the compute target manually and retry.")
+    return compute_target
 
 
 def create_aml_cluster(workspace, parameters):
     print("::debug::Creating aml cluster configuration")
     aml_config = AmlCompute.provisioning_configuration(
-        vm_size=parameters.get("vm_size", "STANDARD_D2_V2"),
+        vm_size=parameters.get("vm_size", None),
         vm_priority=parameters.get("vm_priority", "dedicated"),
         min_nodes=parameters.get("min_nodes", 0),
         max_nodes=parameters.get("max_nodes", 4),
-        idle_seconds_before_scaledown=parameters.get("idle_seconds_before_scaledown", 300),
+        idle_seconds_before_scaledown=parameters.get("idle_seconds_before_scaledown", None),
         tags={"Created": "GitHub Action: Azure/aml-compute"},
         description="AML Cluster created by Azure/aml-compute GitHubb Action",
         remote_login_port_public_access=parameters.get("remote_login_port_public_access", "NotSpecified")
@@ -29,7 +67,7 @@ def create_aml_cluster(workspace, parameters):
         aml_config.admin_user_ssh_key = parameters.get("admin_user_ssh_key", None)
 
     print("::debug::Creating compute target")
-    aml_cluster = ComputeTarget.create(
+    aml_cluster = create_compute_target(
         workspace=workspace,
         name=parameters.get("name", None),
         provisioning_configuration=aml_config
@@ -70,7 +108,7 @@ def create_aks_cluster(workspace, parameters):
         aks_config.load_balancer_subnet = parameters.get("load_balancer_subnet", None)
 
     print("::debug::Creating compute target")
-    aks_cluster = ComputeTarget.create(
+    aks_cluster = create_compute_target(
         workspace=workspace,
         name=parameters.get("name", None),
         provisioning_configuration=aks_config

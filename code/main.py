@@ -3,11 +3,12 @@ import json
 
 from azureml.core import Workspace
 from azureml.core.compute import ComputeTarget
-from azureml.exceptions import ComputeTargetException, AuthenticationException
+from azureml.exceptions import ComputeTargetException, AuthenticationException, ProjectSystemException
 from azureml.core.authentication import ServicePrincipalAuthentication
 from adal.adal_error import AdalError
 from msrest.exceptions import AuthenticationError
-from utils import create_aml_cluster, create_aks_cluster
+from json import JSONDecodeError
+from utils import required_parameters_provided, AMLConfigurationException, create_aml_cluster, create_aks_cluster
 
 
 def main():
@@ -17,9 +18,17 @@ def main():
     azure_credentials = os.environ.get("INPUT_AZURECREDENTIALS", default="{}")
     try:
         azure_credentials = json.loads(azure_credentials)
-    except ValueError:
+    except JSONDecodeError:
         print("::error::Please paste output of `az ad sp create-for-rbac --name <your-sp-name> --role contributor --scopes /subscriptions/<your-subscriptionId>/resourceGroups/<your-rg> --sdk-auth` as value of secret variable: AZURE_CREDENTIALS")
-        return
+        raise AMLConfigurationException(f"Incorrect or poorly formed output from azure credentials saved in AZURE_CREDENTIALS secret. See setup in https://github.com/Azure/aml-compute/blob/master/README.md")
+
+    # Checking provided parameters
+    print("::debug::Checking provided parameters")
+    required_parameters_provided(
+        parameters=azure_credentials,
+        keys=["tenantId", "clientId", "clientSecret", "subscriptionId"],
+        message="Required parameter(s) not found in your azure credentials saved in AZURE_CREDENTIALS secret for logging in to the workspace. Please provide a value for the following key(s): "
+    )
 
     # Loading parameters file
     print("::debug::Loading parameters file")
@@ -30,6 +39,14 @@ def main():
     except FileNotFoundError:
         print(f"::error::Could not find parameter file in {parameters_file_path}. Please provide a parameter file in your repository (e.g. .aml/workspace.json).")
         return
+
+    # Checking provided parameters
+    print("::debug::Checking provided parameters")
+    required_parameters_provided(
+        parameters=parameters,
+        keys=["name", "resourceGroup"],
+        message="Required parameter(s) not found in your parameters file for loading a workspace. Please provide a value for the following key(s): "
+    )
 
     # Loading Workspace
     print("::debug::Loading AML Workspace")
@@ -48,16 +65,27 @@ def main():
         )
     except AuthenticationException as exception:
         print(f"::error::Could not retrieve user token. Please paste output of `az ad sp create-for-rbac --name <your-sp-name> --role contributor --scopes /subscriptions/<your-subscriptionId>/resourceGroups/<your-rg> --sdk-auth` as value of secret variable: AZURE_CREDENTIALS: {exception}")
-        return
+        raise AuthenticationException
     except AuthenticationError as exception:
         print(f"::error::Microsoft REST Authentication Error: {exception}")
-        return
+        raise AuthenticationError
     except AdalError as exception:
         print(f"::error::Active Directory Authentication Library Error: {exception}")
-        return
+        raise AdalError
+    except ProjectSystemException as exception:
+        print(f"::error::Workspace authorizationfailed: {exception}")
+        raise ProjectSystemException
 
     # Loading compute target
     try:
+        # Checking provided parameters
+        print("::debug::Checking provided parameters")
+        required_parameters_provided(
+            parameters=parameters,
+            keys=["name"],
+            message="Required parameter(s) not found in your parameters file for loading a compute target. Please provide a value for the following key(s): "
+        )
+
         print("::debug::Loading existing compute target")
         compute = ComputeTarget(
             workspace=ws,
@@ -66,8 +94,16 @@ def main():
         print("::debug::Found compute target with same name. Not updating the compute target.")
     except ComputeTargetException:
         print("::debug::Could not find existing compute target with provided name")
-        print("::debug::Creating new compute target")
 
+        # Checking provided parameters
+        print("::debug::Checking provided parameters")
+        required_parameters_provided(
+            parameters=parameters,
+            keys=["name", "compute_type"],
+            message="Required parameter(s) not found in your parameters file for loading a compute target. Please provide a value for the following key(s): "
+        )
+
+        print("::debug::Creating new compute target")
         compute_type = parameters.get("compute_type", "")
         if compute_type == "amlcluster":
             compute = create_aml_cluster(
@@ -80,15 +116,8 @@ def main():
                 pareameters=parameters
             )
         else:
-            print(f"::error::Compute Type '{compute_type}' is not supported")
-            return
-    compute.wait_for_completion(show_output=True)
-
-    # Check state of compute
-    print("::debug::Checking state of compute target")
-    if compute.provisioning_state != "Succeeded":
-        print(f"::error:: Deployment of compute target '{compute.name}' failed with state '{compute.provisioning_state}'")
-        return
+            print(f"::error::Compute type '{compute_type}' is not supported")
+            raise AMLConfigurationException(f"Compute type '{compute_type}' is not supported.")
     print("::debug::Successfully finished Azure Machine Learning Compute Action")
 
 
