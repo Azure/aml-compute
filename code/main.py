@@ -26,7 +26,7 @@ def main():
     print("::debug::Checking provided parameters")
     required_parameters_provided(
         parameters=azure_credentials,
-        keys=["tenantId", "clientId", "clientSecret", "subscriptionId"],
+        keys=["tenantId", "clientId", "clientSecret"],
         message="Required parameter(s) not found in your azure credentials saved in AZURE_CREDENTIALS secret for logging in to the workspace. Please provide a value for the following key(s): "
     )
 
@@ -39,14 +39,6 @@ def main():
     except FileNotFoundError:
         print(f"::error::Could not find parameter file in {parameters_file_path}. Please provide a parameter file in your repository (e.g. .ml/.azure/workspace.json).")
         raise AMLConfigurationException(f"Could not find parameter file in {parameters_file_path}. Please provide a parameter file in your repository (e.g. .ml/.azure/workspace.json).")
-
-    # Checking provided parameters
-    print("::debug::Checking provided parameters")
-    required_parameters_provided(
-        parameters=parameters,
-        keys=["name", "resourceGroup"],
-        message="Required parameter(s) not found in your parameters file for loading a workspace. Please provide a value for the following key(s): "
-    )
 
     # Loading Workspace
     print("::debug::Loading AML Workspace")
