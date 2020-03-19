@@ -6,6 +6,10 @@ class AMLConfigurationException(Exception):
     pass
 
 
+class AMLComputeException(Exception):
+    pass
+
+
 def required_parameters_provided(parameters, keys, message="Required parameter(s) not found in your parameters file. Please provide a value for the following key(s): "):
     missing_keys = []
     for key in keys:
@@ -35,16 +39,8 @@ def create_compute_target(workspace, name, config):
     print("::debug::Checking state of compute target")
     if compute_target.provisioning_state != "Succeeded":
         print(f"::error::Deployment of compute target '{compute_target.name}' failed with state '{compute_target.provisioning_state}'. Please delete the compute target manually and retry.")
-        raise AMLConfigurationException(f"Deployment of compute target '{compute_target.name}' failed with state '{compute_target.provisioning_state}'. Please delete the compute target manually and retry.")
+        raise AMLComputeException(f"Deployment of compute target '{compute_target.name}' failed with state '{compute_target.provisioning_state}'. Please delete the compute target manually and retry.")
     return compute_target
-
-
-class AMLConfigurationException(Exception):
-    pass
-
-
-class AMLComputeException(Exception):
-    pass
 
 
 def create_aml_cluster(workspace, parameters):
@@ -122,14 +118,3 @@ def create_aks_cluster(workspace, parameters):
         provisioning_configuration=aks_config
     )
     return aks_cluster
-
-
-def required_parameters_provided(parameters, keys, message="Required parameter not found in your parameters file. Please provide a value for the following key(s): "):
-    missing_keys = []
-    for key in keys:
-        if key not in parameters:
-            err_msg = f"{message} {key}"
-            print(f"::error::{err_msg}")
-            missing_keys.append(key)
-    if len(missing_keys) > 0:
-        raise AMLConfigurationException(f"{message} {missing_keys}")

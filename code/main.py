@@ -8,7 +8,7 @@ from azureml.core.authentication import ServicePrincipalAuthentication
 from adal.adal_error import AdalError
 from msrest.exceptions import AuthenticationError
 from json import JSONDecodeError
-from utils import required_parameters_provided, AMLConfigurationException, create_aml_cluster, create_aks_cluster
+from utils import AMLConfigurationException, required_parameters_provided, create_aml_cluster, create_aks_cluster
 
 
 def main():
