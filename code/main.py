@@ -7,7 +7,7 @@ from azureml.exceptions import ComputeTargetException, AuthenticationException
 from azureml.core.authentication import ServicePrincipalAuthentication
 from adal.adal_error import AdalError
 from msrest.exceptions import AuthenticationError
-from utils import create_aml_cluster, create_aks_cluster, AMLConfigurationException, AMLComputeException
+from utils import create_aml_cluster, create_aks_cluster, AMLConfigurationException, AMLComputeException, required_parameters_provided
 
 
 def main():
@@ -55,6 +55,11 @@ def main():
     except AdalError as exception:
         print(f"::error::Active Directory Authentication Library Error: {exception}")
         raise AdalError
+    
+    required_parameters_provided(
+        parameters=parameters,
+        keys=["name", "compute_type"]
+    )
 
     # Loading compute target
     try:
@@ -77,7 +82,7 @@ def main():
         if compute_type == "akscluster":
             compute = create_aks_cluster(
                 workspace=ws,
-                pareameters=parameters
+                parameters=parameters
             )
         else:
             print(f"::error::Compute Type '{compute_type}' is not supported")
