@@ -51,7 +51,7 @@ def main():
         raise AuthenticationException
     except AuthenticationError as exception:
         print(f"::error::Microsoft REST Authentication Error: {exception}")
-        raise AuthenticationException
+        raise AuthenticationError
     except AdalError as exception:
         print(f"::error::Active Directory Authentication Library Error: {exception}")
         raise AdalError
