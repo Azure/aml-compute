@@ -87,11 +87,11 @@ def main():
         )
 
         print("::debug::Loading existing compute target")
-        compute = ComputeTarget(
+        compute_target = ComputeTarget(
             workspace=ws,
             name=parameters.get("name", None)
         )
-        print("::debug::Found compute target with same name. Not updating the compute target.")
+        print(f"::debug::Found compute target with same name. Not updating the compute target: {compute_target.serialize()}")
     except ComputeTargetException:
         print("::debug::Could not find existing compute target with provided name")
 
