@@ -32,13 +32,13 @@ def main():
 
     # Loading parameters file
     print("::debug::Loading parameters file")
-    parameters_file_path = os.path.join(".aml", parameters_file)
+    parameters_file_path = os.path.join(".ml", ".azure", parameters_file)
     try:
         with open(parameters_file_path) as f:
             parameters = json.load(f)
     except FileNotFoundError:
-        print(f"::error::Could not find parameter file in {parameters_file_path}. Please provide a parameter file in your repository (e.g. .aml/workspace.json).")
-        return
+        print(f"::error::Could not find parameter file in {parameters_file_path}. Please provide a parameter file in your repository (e.g. .ml/.azure/workspace.json).")
+        raise AMLConfigurationException(f"Could not find parameter file in {parameters_file_path}. Please provide a parameter file in your repository (e.g. .ml/.azure/workspace.json).")
 
     # Checking provided parameters
     print("::debug::Checking provided parameters")
@@ -55,7 +55,7 @@ def main():
         service_principal_id=azure_credentials.get("clientId", ""),
         service_principal_password=azure_credentials.get("clientSecret", "")
     )
-    config_file_path = os.environ.get("GITHUB_WORKSPACE", default=".aml")
+    config_file_path = os.environ.get("GITHUB_WORKSPACE", default=".ml/.azure")
     config_file_name = "aml_arm_config.json"
     try:
         ws = Workspace.from_config(
@@ -113,7 +113,7 @@ def main():
         if compute_type == "akscluster":
             compute = create_aks_cluster(
                 workspace=ws,
-                pareameters=parameters
+                parameters=parameters
             )
         else:
             print(f"::error::Compute type '{compute_type}' is not supported")

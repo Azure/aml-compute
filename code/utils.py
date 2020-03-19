@@ -39,6 +39,14 @@ def create_compute_target(workspace, name, config):
     return compute_target
 
 
+class AMLConfigurationException(Exception):
+    pass
+
+
+class AMLComputeException(Exception):
+    pass
+
+
 def create_aml_cluster(workspace, parameters):
     print("::debug::Creating aml cluster configuration")
     aml_config = AmlCompute.provisioning_configuration(
@@ -114,3 +122,14 @@ def create_aks_cluster(workspace, parameters):
         provisioning_configuration=aks_config
     )
     return aks_cluster
+
+
+def required_parameters_provided(parameters, keys, message="Required parameter not found in your parameters file. Please provide a value for the following key(s): "):
+    missing_keys = []
+    for key in keys:
+        if key not in parameters:
+            err_msg = f"{message} {key}"
+            print(f"::error::{err_msg}")
+            missing_keys.append(key)
+    if len(missing_keys) > 0:
+        raise AMLConfigurationException(f"{message} {missing_keys}")
