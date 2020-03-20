@@ -10,8 +10,8 @@ inputs:
     required: true
     default: "compute.json"
 branding:
-  icon: chevron-up
-  color: 'blue'
+  icon: "chevron-up"
+  color: "blue"
 runs:
   using: "docker"
   image: "Dockerfile"
