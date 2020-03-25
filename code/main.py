@@ -14,8 +14,8 @@ from utils import AMLConfigurationException, required_parameters_provided, creat
 def main():
     # Loading input values
     print("::debug::Loading input values")
-    parameters_file = os.environ.get("INPUT_PARAMETERSFILE", default="compute.json")
-    azure_credentials = os.environ.get("INPUT_AZURECREDENTIALS", default="{}")
+    parameters_file = os.environ.get("INPUT_PARAMETERS_FILE", default="compute.json")
+    azure_credentials = os.environ.get("INPUT_AZURE_CREDENTIALS", default="{}")
     try:
         azure_credentials = json.loads(azure_credentials)
     except JSONDecodeError:
