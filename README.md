@@ -3,11 +3,9 @@
 
 # Azure Machine Learning Compute Action
 
-https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2020-02-01/managedClusters?toc=%2Fen-us%2Fazure%2Fazure-resource-manager%2Ftoc.json&bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#managedclusteragentpoolprofile-object
-
 ## Usage
 
-Description. 
+The Azure Machine Learning Compute action will allow you to create a new compute target or check whether the specified compute target is available so you can later run your Machine Learning experiments or deploy your models remotely. If the compute target exists, it will just connect to it, otherwise the action can create a new compute target based on the provided parameters. Currently, the action only supports Azure ML Clusters and AKS Clusters. You will need to have azure credentials that allow you to create and/or connect to a workspace.
 
 ### Example workflow
 
@@ -21,88 +19,100 @@ jobs:
     - uses: actions/checkout@master
     - name: Run action
 
-    steps:
-    - uses: actions/checkout@master
-    - name: Run action
-
-      # Put your action repo here
-      uses: me/myaction@master
-
-      # Put an example of your mandatory inputs here
+    # AML Workspace Action
+    - uses: Azure/aml-workspace
       with:
-        myInput: world
+        azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # AML Compute Action
+    - uses: Azure/aml-compute
+      with:
+        # required inputs as secrets
+        azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+        # optional
+        parameters_file: compute.json
 ```
 
 ### Inputs
 
-| Input                                             | Description                                        |
-|------------------------------------------------------|-----------------------------------------------|
-| `myInput`  | An example mandatory input    |
-| `anotherInput` _(optional)_  | An example optional input    |
+| Input | Required | Default | Description |
+| ----- | -------- | ------- | ----------- |
+| azure_credentials | x | - | Output of `az ad sp create-for-rbac --name <your-sp-name> --role contributor --scopes /subscriptions/<your-subscriptionId>/resourceGroups/<your-rg> --sdk-auth`. This should be stored in your secrets |
+| parameters_file |  | `"compute.json"` | JSON file in the `.ml/.azure` folder specifying your Azure Machine Learning compute target details. |
+
+#### Azure Credentials
+
+Install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and execute the following command to generate the credentials:
+
+```sh
+# Replace {service-principal-name}, {subscription-id} and {resource-group} with your Azure subscription id and resource group and any name
+az ad sp create-for-rbac --name {service-principal-name} \
+                         --role contributor \
+                         --scopes /subscriptions/{subscription-id}/resourceGroups/{resource-group} \
+                         --sdk-auth
+```
+
+This will generate the following JSON output:
+
+```sh
+{
+  "clientId": "<GUID>",
+  "clientSecret": "<GUID>",
+  "subscriptionId": "<GUID>",
+  "tenantId": "<GUID>",
+  (...)
+}
+```
+
+Add the JSON output as [a secret](https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets) with the name `AZURE_CREDENTIALS` in the GitHub repository.
 
 #### Parameter File
 
-A sample file can be found in this repository in the folder `.aml`. The action expects a similar parameter file in your repository in the `.aml folder`.
+The action expects a JSON file in the `.ml/.azure` folder in your repository, which specifies details of your Azure Machine Learning compute target. By default, the action expects a file with the name `compute.json`. If your JSON file has a different name, you can specify it with this parameter. Currently, the action only supports Azure ML Clusters and AKS Clusters.
 
-| Parameter Name      | Required | Allowed Values                       | Description |
-| ------------------- | -------- | ------------------------------------ | ----------- |
-| createWorkspace     | x        | bool: true, false                    | Create Workspace if it could not be loaded |
-| name                | x        | str                                  | For more details please read [here](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.workspace.workspace?view=azure-ml-py#create-name--auth-none--subscription-id-none--resource-group-none--location-none--create-resource-group-true--sku--basic---friendly-name-none--storage-account-none--key-vault-none--app-insights-none--container-registry-none--cmk-keyvault-none--resource-cmk-uri-none--hbi-workspace-false--default-cpu-compute-target-none--default-gpu-compute-target-none--exist-ok-false--show-output-true-) |
-| friendlyName        |          | str                                  |
-| createResourceGroup |          | bool: true, false                    |
-| location            |          | str: [supported region](https://azure.microsoft.com/global-infrastructure/services/?products=machine-learning-service) |
-| sku                 |          | str: "basic", "enterprise"           |
-| storageAccount      |          | str: Azure resource ID format        |
-| keyVault            |          | str: Azure resource ID format        |
-| appInsights         |          | str: Azure resource ID format        |
-| containerRegistry   |          | str: Azure resource ID format        |
-| cmkKeyVault         |          | str: Azure resource ID format        |
-| resourceCmkUri      |          | str: URI of the customer managed key |
-| hbiWorkspace        |          | bool: true, false                    |
+Sample files for AML and AKS clusters can be found in this repository in the folder `.ml/.azure`. The JSON file can include the following parameters:
 
+##### AML Cluster
+
+| Parameter | Required | Allowed Values       | Description |
+| --------- | -------- | -------------------- | ----------- |
+| name                            | x        | str                 | |
+| compute_type                    | x        | str: `"amlcluster"` |
+| vm_size                         |          | str: 
+| vm_priority                     |          | str: 
+| min_nodes                       |          | int: [0, inf[
+| max_nodes                       |          | int: [1, inf[
+| idle_seconds_before_scaledown   |          | int: [0, inf[
+| vnet_resource_group_name        |          | str
+| vnet_name                       |          | str
+| subnet_name                     |          | str
+| admin_username                  |          | str
+| admin_user_password             |          | str
+| admin_user_ssh_key              |          | str
+| remote_login_port_public_access |          | str
+
+Please visit [this website]() for more details.
+
+##### AKS Cluster
+
+| Parameter | Required | Allowed Values       | Description |
+| --------- | -------- | -------------------- | ----------- |
+| name                            | x        | str                 | |
+| compute_type                    | x        |
+
+Please visit [this website]() for more details.
 
 ### Outputs
 
-| Output                                             | Description                                        |
-|------------------------------------------------------|-----------------------------------------------|
-| `myOutput`  | An example output (returns 'Hello world')    |
+This action does not provide any outputs.
 
-## Examples
+### Other Azure Machine Learning Actions
 
-
-
-### Using the optional input
-
-This is how to use the optional input.
-
-```yaml
-with:
-  myInput: world
-  anotherInput: optional
-```
-
-### Using outputs
-
-Show people how to use your outputs in another action.
-
-```yaml
-steps:
-- uses: actions/checkout@master
-- name: Run action
-  id: myaction
-
-  # Put your action name here
-  uses: me/myaction@master
-
-  # Put an example of your mandatory arguments here
-  with:
-    myInput: world
-
-# Put an example of using your outputs here
-- name: Check outputs
-    run: |
-    echo "Outputs - ${{ steps.myaction.outputs.myOutput }}"
-```
+- [aml-workspace](https://github.com/Azure/aml-workspace) - Connects to or creates a new workspace
+- [aml-compute](https://github.com/Azure/aml-compute) - Connects to or creates a new compute target in Azure Machine Learning
+- [aml-run](https://github.com/Azure/aml-run) - Submits a ScriptRun, an Estimator or a Pipeline to Azure Machine Learning
+- [aml-registermodel](https://github.com/Azure/aml-registermodel) - Registers a model to Azure Machine Learning
+- [aml-deploy](https://github.com/Azure/aml-deploy) - Deploys a model and creates an endpoint for the model
 
 # Contributing
 
@@ -117,3 +127,5 @@ provided by the bot. You will only need to do this once across all repos using o
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2020-02-01/managedClusters?toc=%2Fen-us%2Fazure%2Fazure-resource-manager%2Ftoc.json&bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#managedclusteragentpoolprofile-object
