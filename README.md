@@ -76,24 +76,29 @@ The action expects a JSON file in the `.ml/.azure` folder in your repository, wh
 
 Sample files for AML and AKS clusters can be found in this repository in the folder `.ml/.azure`. The JSON file can include the following parameters:
 
+##### Common parameters
+
+| Parameter | Required | Allowed Values       | Default | Description |
+| --------- | -------- | -------------------- | ------- | ----------- |
+| name                            | x (for loading) | str | - | The name of the of the Compute object to retrieve or create. |
+| compute_type                    | (only for creating) | str: `"amlcluster"`, `"akscluster"` | - | Specifies the type of compute target that should be created by the action if a compute target with the specified name was not found. |
+
 ##### AML Cluster
 
-| Parameter | Required | Allowed Values       | Description |
-| --------- | -------- | -------------------- | ----------- |
-| name                            | x        | str                 | |
-| compute_type                    | x        | str: `"amlcluster"` |
-| vm_size                         |          | str: 
-| vm_priority                     |          | str: 
-| min_nodes                       |          | int: [0, inf[
-| max_nodes                       |          | int: [1, inf[
-| idle_seconds_before_scaledown   |          | int: [0, inf[
-| vnet_resource_group_name        |          | str
-| vnet_name                       |          | str
-| subnet_name                     |          | str
-| admin_username                  |          | str
-| admin_user_password             |          | str
-| admin_user_ssh_key              |          | str
-| remote_login_port_public_access |          | str
+| Parameter | Required | Allowed Values       |  Default | Description |
+| --------- | -------- | -------------------- | -------- | ----------- |
+| vm_size                         |          | str: [`"Basic_A0"`, `"Standard_DS3_v2"`, etc.](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2019-07-01/virtualMachines?toc=%2Fen-us%2Fazure%2Fazure-resource-manager%2Ftoc.json&bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#hardwareprofile-object) | `"Standard_NC6"` | The size of agent VMs. Note that not all sizes are available in all regions. |
+| vm_priority                     |          | str: `"dedicated"`, `"lowpriority"` | `"dedicated"` | The VM priority. |
+| min_nodes                       |          | int: [0, inf[ | 0 | The minimum number of nodes to use on the cluster. |
+| max_nodes                       |          | int: [1, inf[ | 4 | The maximum number of nodes to use on the cluster. |
+| idle_seconds_before_scaledown   |          | int: [0, inf[ | 120 | Node idle time in seconds before scaling down the cluster. |
+| vnet_resource_group_name        |          | str | null |
+| vnet_name                       |          | str | null |
+| subnet_name                     |          | str | null |
+| admin_username                  |          | str | null | The name of the administrator user account which can be used to SSH into nodes. |
+| admin_user_password             |          | str | null | The password of the administrator user account. |
+| admin_user_ssh_key              |          | str | null | The SSH public key of the administrator user account. |
+| remote_login_port_public_access |          | str: `"Enabled"`, `"Disabled"`, `"NotSpecified"` | `"NotSpecified"` | State of the public SSH port. `"Disabled"` indicates that the public ssh port is closed on all nodes of the cluster. `"Enabled"` indicates that the public ssh port is open on all nodes of the cluster. `"NotSpecified"` indicates that the public ssh port is closed on all nodes of the cluster if VNet is defined, else is open all public nodes. It can be this default value only during cluster creation time. After creation, it will be either enabled or disabled. |
 
 Please visit [this website]() for more details.
 
@@ -104,7 +109,7 @@ Please visit [this website]() for more details.
 | name                            | x        | str                 | |
 | compute_type                    | x        |
 
-Please visit [this website]() for more details.
+Please visit [this website](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.compute.amlcompute%28class%29?view=azure-ml-py#provisioning-configuration-vm-size-----vm-priority--dedicated---min-nodes-0--max-nodes-none--idle-seconds-before-scaledown-none--admin-username-none--admin-user-password-none--admin-user-ssh-key-none--vnet-resourcegroup-name-none--vnet-name-none--subnet-name-none--tags-none--description-none--remote-login-port-public-access--notspecified--) for more details.
 
 ### Outputs
 
