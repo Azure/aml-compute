@@ -7,6 +7,10 @@
 
 The Azure Machine Learning Compute action will allow you to create a new compute target or check whether the specified compute target is available so you can later run your Machine Learning experiments or deploy your models remotely. If the compute target exists, it will just connect to it, otherwise the action can create a new compute target based on the provided parameters. Currently, the action only supports Azure ML Clusters and AKS Clusters. You will need to have azure credentials that allow you to create and/or connect to a workspace.
 
+This action requires an AML workspace to be created or attached to via the [aml-workspace](https://github.com/Azure/aml-workspace) action.
+
+This action is one in a series of actions that are used to make ML Ops systems. Examples of these can be found at [ml-template-azure](https://github.com/machine-learning-apps/ml-template-azure) and [aml-template](https://github.com/Azure/aml-template).
+
 ### Example workflow
 
 ```yaml
