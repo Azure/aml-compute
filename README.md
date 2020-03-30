@@ -85,8 +85,8 @@ Sample files for AML and AKS clusters can be found in this repository in the fol
 
 ##### AML Cluster
 
-| Parameter | Required | Allowed Values       |  Default | Description |
-| --------- | -------- | -------------------- | -------- | ----------- |
+| Parameter | Required | Allowed Values       | Default | Description |
+| --------- | -------- | -------------------- | ------- | ----------- |
 | vm_size                         |          | str: [`"Basic_A0"`, `"Standard_DS3_v2"`, etc.](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2019-07-01/virtualMachines?toc=%2Fen-us%2Fazure%2Fazure-resource-manager%2Ftoc.json&bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#hardwareprofile-object) | `"Standard_NC6"` | The size of agent VMs. Note that not all sizes are available in all regions. |
 | vm_priority                     |          | str: `"dedicated"`, `"lowpriority"` | `"dedicated"` | The VM priority. |
 | min_nodes                       |          | int: [0, inf[ | 0 | The minimum number of nodes to use on the cluster. |
@@ -104,10 +104,23 @@ Please visit [this website]() for more details.
 
 ##### AKS Cluster
 
-| Parameter | Required | Allowed Values       | Description |
-| --------- | -------- | -------------------- | ----------- |
-| name                            | x        | str                 | |
-| compute_type                    | x        |
+| Parameter | Required | Allowed Values       | Default | Description |
+| --------- | -------- | -------------------- | ------- | ----------- |
+| agent_count |  |
+| vm_size |  |
+| location |  |
+| service_cidr |  |
+| dns_service_ip |  |
+| docker_bridge_cidr |  |
+| cluster_purpose |  |
+| vnet_resource_group_name |  |
+| vnet_name |  |
+| subnet_name |  |
+| ssl_cname |  |
+| ssl_cert_pem_file |  |
+| ssl_key_pem_file |  |
+| load_balancer_type |  |
+| load_balancer_subnet |  |
 
 Please visit [this website](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.compute.amlcompute%28class%29?view=azure-ml-py#provisioning-configuration-vm-size-----vm-priority--dedicated---min-nodes-0--max-nodes-none--idle-seconds-before-scaledown-none--admin-username-none--admin-user-password-none--admin-user-ssh-key-none--vnet-resourcegroup-name-none--vnet-name-none--subnet-name-none--tags-none--description-none--remote-login-port-public-access--notspecified--) for more details.
 
