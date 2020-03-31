@@ -36,7 +36,7 @@ jobs:
         # required inputs as secrets
         azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
         # optional
-        parameters_file: compute.json
+        parameters_file: "compute.json"
 ```
 
 ### Inputs
