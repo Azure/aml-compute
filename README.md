@@ -136,7 +136,7 @@ This action does not provide any outputs.
 - [aml-registermodel](https://github.com/Azure/aml-registermodel) - Registers a model to Azure Machine Learning
 - [aml-deploy](https://github.com/Azure/aml-deploy) - Deploys a model and creates an endpoint for the model
 
-# Contributing
+### Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
