@@ -106,21 +106,21 @@ Please visit [this website]() for more details.
 
 | Parameter | Required | Allowed Values       | Default | Description |
 | --------- | -------- | -------------------- | ------- | ----------- |
-| agent_count |  |
-| vm_size |  |
-| location |  |
-| service_cidr |  |
-| dns_service_ip |  |
-| docker_bridge_cidr |  |
-| cluster_purpose |  |
-| vnet_resource_group_name |  |
-| vnet_name |  |
-| subnet_name |  |
-| ssl_cname |  |
-| ssl_cert_pem_file |  |
-| ssl_key_pem_file |  |
-| load_balancer_type |  |
-| load_balancer_subnet |  |
+| agent_count |  | int: [1, inf[ | 3 | The number of agents (VMs) to host containers. |
+| vm_size |  | str: [`"Standard_A1_v2"`, `"Standard_D3_v2"`, etc.](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2020-02-01/managedClusters?toc=%2Fen-us%2Fazure%2Fazure-resource-manager%2Ftoc.json&bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#managedclusteragentpoolprofile-object) | `"Standard_D3_v2"` | The size of agent VMs. |
+| location |  | str: [supported region](https://azure.microsoft.com/en-us/global-infrastructure/services/?regions=all&products=kubernetes-service) | location of workspace | The location to provision cluster in. |
+| service_cidr |  | str | null | A CIDR notation IP range from which to assign service cluster IPs. |
+| dns_service_ip |  | str | null | Containers DNS server IP address. |
+| docker_bridge_cidr |  | str | null | A CIDR notation IP for Docker bridge. |
+| cluster_purpose |  | str: `"DevTest"`, `"FastProd"` | `"FastProd"` | Targeted usage of the cluster. This is used to provision Azure Machine Learning components to ensure the desired level of fault-tolerance and QoS. `"FastProd"` will provision components to handle higher levels of traffic with production quality fault-tolerance. This will default the AKS cluster to have 3 nodes. `"DevTest"` will provision components at a minimal level for testing. This will default the AKS cluster to have 1 node. |
+| vnet_resource_group_name |  | str | null | The name of the resource group where the virtual network is located. |
+| vnet_name |  | str | null | The name of the virtual network. |
+| subnet_name |  | str | null | The name of the subnet inside the vnet. |
+| ssl_cname |  | str | null | A CName to use if enabling SSL validation on the cluster. Must provide all three CName, cert file, and key file to enable SSL validation. |
+| ssl_cert_pem_file |  | str | null | A file path to a file containing cert information for SSL validation. Must provide all three CName, cert file, and key file to enable SSL validation. |
+| ssl_key_pem_file |  | str | null | A file path to a file containing key information for SSL validation. Must provide all three CName, cert file, and key file to enable SSL validation. |
+| load_balancer_type |  | str: `"PublicIp"`, `"InternalLoadBalancer"` | `"PublicIp"` | Load balancer type of AKS cluster. |
+| load_balancer_subnet |  | str | equal to subnet_name | Load balancer subnet of AKS cluster. It can be used only when Internal Load Balancer is used as load balancer type. |
 
 Please visit [this website](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.compute.amlcompute%28class%29?view=azure-ml-py#provisioning-configuration-vm-size-----vm-priority--dedicated---min-nodes-0--max-nodes-none--idle-seconds-before-scaledown-none--admin-username-none--admin-user-password-none--admin-user-ssh-key-none--vnet-resourcegroup-name-none--vnet-name-none--subnet-name-none--tags-none--description-none--remote-login-port-public-access--notspecified--) for more details.
 
