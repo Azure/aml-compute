@@ -22,21 +22,23 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: Check Out Repository
-        id: checkout_repository
-        uses: actions/checkout@v2
+      id: checkout_repository
+      uses: actions/checkout@v2
 
     # AML Workspace Action
     - uses: Azure/aml-workspace
+      id: aml_workspace
       with:
         azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
     # AML Compute Action
     - uses: Azure/aml-compute
+      id: aml_compute
       with:
         # required inputs as secrets
         azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
         # optional
-        parameters_file: compute.json
+        parameters_file: "compute.json"
 ```
 
 ### Inputs
