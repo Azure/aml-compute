@@ -94,9 +94,9 @@ Sample files for AML and AKS clusters can be found in this repository in the fol
 | min_nodes                       |          | int: [0, inf[ | 0 | The minimum number of nodes to use on the cluster. |
 | max_nodes                       |          | int: [1, inf[ | 4 | The maximum number of nodes to use on the cluster. |
 | idle_seconds_before_scaledown   |          | int: [0, inf[ | 120 | Node idle time in seconds before scaling down the cluster. |
-| vnet_resource_group_name        |          | str | null |
-| vnet_name                       |          | str | null |
-| subnet_name                     |          | str | null |
+| vnet_resource_group_name        |          | str | null | The name of the resource group where the virtual network is located. |
+| vnet_name                       |          | str | null | The name of the virtual network. |
+| subnet_name                     |          | str | null | The name of the subnet inside the VNet. |
 | admin_username                  |          | str | null | The name of the administrator user account which can be used to SSH into nodes. |
 | admin_user_password             |          | str | null | The password of the administrator user account. |
 | admin_user_ssh_key              |          | str | null | The SSH public key of the administrator user account. |
