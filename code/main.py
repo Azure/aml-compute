@@ -8,7 +8,7 @@ from azureml.core.authentication import ServicePrincipalAuthentication
 from adal.adal_error import AdalError
 from msrest.exceptions import AuthenticationError
 from json import JSONDecodeError
-from utils import AMLConfigurationException, required_parameters_provided, create_aml_cluster, create_aks_cluster
+from utils import AMLConfigurationException, required_parameters_provided, create_aml_cluster, create_aks_cluster, mask_parameter
 
 
 def main():
@@ -30,9 +30,16 @@ def main():
         message="Required parameter(s) not found in your azure credentials saved in AZURE_CREDENTIALS secret for logging in to the workspace. Please provide a value for the following key(s): "
     )
 
+    # Mask values
+    print("::debug::Masking parameters")
+    mask_parameter(parameter=azure_credentials.get("tenantId", ""))
+    mask_parameter(parameter=azure_credentials.get("clientId", ""))
+    mask_parameter(parameter=azure_credentials.get("clientSecret", ""))
+    mask_parameter(parameter=azure_credentials.get("subscriptionId", ""))
+
     # Loading parameters file
     print("::debug::Loading parameters file")
-    parameters_file_path = os.path.join(".ml", ".azure", parameters_file)
+    parameters_file_path = os.path.join(".cloud", ".azure", parameters_file)
     try:
         with open(parameters_file_path) as f:
             parameters = json.load(f)

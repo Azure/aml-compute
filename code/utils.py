@@ -118,3 +118,7 @@ def create_aks_cluster(workspace, parameters):
         provisioning_configuration=aks_config
     )
     return aks_cluster
+
+
+def mask_parameter(parameter):
+    print(f"::add-mask::{parameter}")
