@@ -9,7 +9,11 @@ The Azure Machine Learning Compute action will allow you to create a new compute
 
 This action requires an AML workspace to be created or attached to via the [aml-workspace](https://github.com/Azure/aml-workspace) action.
 
-This action is one in a series of actions that are used to make ML Ops systems. Examples of these can be found at [ml-template-azure](https://github.com/machine-learning-apps/ml-template-azure) and [aml-template](https://github.com/Azure/aml-template).
+## Template repositories
+
+This action is one in a series of actions that are used to make ML Ops systems. Examples of these can be found at
+1. [ml-template-azure](https://github.com/machine-learning-apps/ml-template-azure) and
+2. [aml-template](https://github.com/Azure/aml-template).
 
 ### Example workflow
 
@@ -46,7 +50,7 @@ jobs:
 | Input | Required | Default | Description |
 | ----- | -------- | ------- | ----------- |
 | azure_credentials | x | - | Output of `az ad sp create-for-rbac --name <your-sp-name> --role contributor --scopes /subscriptions/<your-subscriptionId>/resourceGroups/<your-rg> --sdk-auth`. This should be stored in your secrets |
-| parameters_file |  | `"compute.json"` | JSON file in the `.ml/.azure` folder specifying your Azure Machine Learning compute target details. |
+| parameters_file |  | `"compute.json"` | JSON file in the `.cloud/.azure` folder specifying your Azure Machine Learning compute target details. |
 
 #### Azure Credentials
 
@@ -76,9 +80,9 @@ Add the JSON output as [a secret](https://help.github.com/en/actions/configuring
 
 #### Parameter File
 
-The action expects a JSON file in the `.ml/.azure` folder in your repository, which specifies details of your Azure Machine Learning compute target. By default, the action expects a file with the name `compute.json`. If your JSON file has a different name, you can specify it with this parameter. Currently, the action only supports Azure ML Clusters and AKS Clusters.
+The action expects a JSON file in the `.cloud/.azure` folder in your repository, which specifies details of your Azure Machine Learning compute target. By default, the action expects a file with the name `compute.json`. If your JSON file has a different name, you can specify it with this parameter. Currently, the action only supports Azure ML Clusters and AKS Clusters.
 
-Sample files for AML and AKS clusters can be found in this repository in the folder `.ml/.azure`. The JSON file can include the following parameters:
+Sample files for AML and AKS clusters can be found in this repository in the folder `.cloud/.azure`. The JSON file can include the following parameters:
 
 ##### Common parameters
 
