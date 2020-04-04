@@ -1,3 +1,5 @@
+import os
+
 from azureml.core.compute import ComputeTarget, AmlCompute, AksCompute
 from azureml.exceptions import ComputeTargetException
 
@@ -52,7 +54,7 @@ def create_aml_cluster(workspace, parameters):
         max_nodes=parameters.get("max_nodes", 4),
         idle_seconds_before_scaledown=parameters.get("idle_seconds_before_scaledown", None),
         tags={"Created": "GitHub Action: Azure/aml-compute"},
-        description="AML Cluster created by Azure/aml-compute GitHubb Action",
+        description="AML Cluster created by Azure/aml-compute GitHub Action",
         remote_login_port_public_access=parameters.get("remote_login_port_public_access", "NotSpecified")
     )
 
@@ -71,9 +73,11 @@ def create_aml_cluster(workspace, parameters):
         aml_config.admin_user_ssh_key = parameters.get("admin_user_ssh_key", None)
 
     print("::debug::Creating compute target")
+    # Default compute target name
+    repository_name = os.environ.get("GITHUB_REPOSITORY").split("/")[-1]
     aml_cluster = create_compute_target(
         workspace=workspace,
-        name=parameters.get("name", None),
+        name=parameters.get("name", repository_name),
         provisioning_configuration=aml_config
     )
     return aml_cluster
@@ -112,9 +116,11 @@ def create_aks_cluster(workspace, parameters):
         aks_config.load_balancer_subnet = parameters.get("load_balancer_subnet", None)
 
     print("::debug::Creating compute target")
+    # Default compute target name
+    repository_name = os.environ.get("GITHUB_REPOSITORY").split("/")[-1]
     aks_cluster = create_compute_target(
         workspace=workspace,
-        name=parameters.get("name", None),
+        name=parameters.get("name", repository_name),
         provisioning_configuration=aks_config
     )
     return aks_cluster

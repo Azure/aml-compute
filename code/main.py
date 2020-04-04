@@ -44,8 +44,8 @@ def main():
         with open(parameters_file_path) as f:
             parameters = json.load(f)
     except FileNotFoundError:
-        print(f"::error::Could not find parameter file in {parameters_file_path}. Please provide a parameter file in your repository (e.g. .cloud/.azure/workspace.json).")
-        raise AMLConfigurationException(f"Could not find parameter file in {parameters_file_path}. Please provide a parameter file in your repository (e.g. .cloud/.azure/workspace.json).")
+        print(f"::debug::Could not find parameter file in {parameters_file_path}. Please provide a parameter file in your repository if you do not want to use default settings (e.g. .cloud/.azure/compute.json).")
+        parameters = {}
 
     # Loading Workspace
     print("::debug::Loading AML Workspace")
@@ -77,18 +77,13 @@ def main():
 
     # Loading compute target
     try:
-        # Checking provided parameters
-        print("::debug::Checking provided parameters")
-        required_parameters_provided(
-            parameters=parameters,
-            keys=["name"],
-            message="Required parameter(s) not found in your parameters file for loading a compute target. Please provide a value for the following key(s): "
-        )
+        # Default compute target name
+        repository_name = os.environ.get("GITHUB_REPOSITORY").split("/")[-1]
 
         print("::debug::Loading existing compute target")
         compute_target = ComputeTarget(
             workspace=ws,
-            name=parameters.get("name", None)
+            name=parameters.get("name", repository_name)
         )
         print(f"::debug::Found compute target with same name. Not updating the compute target: {compute_target.serialize()}")
     except ComputeTargetException:
@@ -98,7 +93,7 @@ def main():
         print("::debug::Checking provided parameters")
         required_parameters_provided(
             parameters=parameters,
-            keys=["name", "compute_type"],
+            keys=["compute_type"],
             message="Required parameter(s) not found in your parameters file for loading a compute target. Please provide a value for the following key(s): "
         )
 

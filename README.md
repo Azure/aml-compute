@@ -11,9 +11,9 @@ This action requires an AML workspace to be created or attached to via the [aml-
 
 ## Template repositories
 
-This action is one in a series of actions that are used to make ML Ops systems. Examples of these can be found at
-1. [ml-template-azure](https://github.com/machine-learning-apps/ml-template-azure) and
-2. [aml-template](https://github.com/Azure/aml-template).
+This action is one in a series of actions that can be used to setup an ML Ops process. Examples of these can be found at
+1. Simple example: [ml-template-azure](https://github.com/machine-learning-apps/ml-template-azure) and
+2. Comprehensive example: [aml-template](https://github.com/Azure/aml-template).
 
 ### Example workflow
 
@@ -54,10 +54,10 @@ jobs:
 
 #### Azure Credentials
 
-Install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and execute the following command to generate the credentials:
+Install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) on your computer or use the Cloud CLI and execute the following command to generate the required credentials:
 
 ```sh
-# Replace {service-principal-name}, {subscription-id} and {resource-group} with your Azure subscription id and resource group and any name
+# Replace {service-principal-name}, {subscription-id} and {resource-group} with your Azure subscription id and resource group name and any name for your service principle
 az ad sp create-for-rbac --name {service-principal-name} \
                          --role contributor \
                          --scopes /subscriptions/{subscription-id}/resourceGroups/{resource-group} \
@@ -76,11 +76,11 @@ This will generate the following JSON output:
 }
 ```
 
-Add the JSON output as [a secret](https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets) with the name `AZURE_CREDENTIALS` in the GitHub repository.
+Add this JSON output as [a secret](https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets) with the name `AZURE_CREDENTIALS` in your GitHub repository.
 
 #### Parameter File
 
-The action expects a JSON file in the `.cloud/.azure` folder in your repository, which specifies details of your Azure Machine Learning compute target. By default, the action expects a file with the name `compute.json`. If your JSON file has a different name, you can specify it with this parameter. Currently, the action only supports Azure ML Clusters and AKS Clusters.
+The action expects a JSON file in the `.cloud/.azure` folder in your repository, which specifies details of your Azure Machine Learning compute target. By default, the action expects a file with the name `compute.json`. If your JSON file has a different name, you can specify it with this input parameter. Currently, the action only supports Azure ML Clusters and AKS Clusters.
 
 Sample files for AML and AKS clusters can be found in this repository in the folder `.cloud/.azure`. The JSON file can include the following parameters:
 
@@ -88,8 +88,8 @@ Sample files for AML and AKS clusters can be found in this repository in the fol
 
 | Parameter | Required | Allowed Values       | Default | Description |
 | --------- | -------- | -------------------- | ------- | ----------- |
-| name                            | x (for loading) | str | - | The name of the of the Compute object to retrieve or create. |
-| compute_type                    | (only for creating) | str: `"amlcluster"`, `"akscluster"` | - | Specifies the type of compute target that should be created by the action if a compute target with the specified name was not found. |
+| name                            |  | str | <REPOSITORY_NAME> | The name of the of the Compute object to retrieve or create. |
+| compute_type                    | (only for creating compute target) | str: `"amlcluster"`, `"akscluster"` | - | Specifies the type of compute target that should be created by the action if a compute target with the specified name was not found. |
 
 ##### AML Cluster
 
