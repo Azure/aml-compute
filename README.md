@@ -105,9 +105,6 @@ Sample files for AML and AKS clusters can be found in this repository in the fol
 | vnet_resource_group_name        |          | str | null | The name of the resource group where the virtual network is located. |
 | vnet_name                       |          | str | null | The name of the virtual network. |
 | subnet_name                     |          | str | null | The name of the subnet inside the VNet. |
-| admin_username                  |          | str | null | The name of the administrator user account which can be used to SSH into nodes. |
-| admin_user_password             |          | str | null | The password of the administrator user account. |
-| admin_user_ssh_key              |          | str | null | The SSH public key of the administrator user account. |
 | remote_login_port_public_access |          | str: `"Enabled"`, `"Disabled"`, `"NotSpecified"` | `"NotSpecified"` | State of the public SSH port. `"Disabled"` indicates that the public ssh port is closed on all nodes of the cluster. `"Enabled"` indicates that the public ssh port is open on all nodes of the cluster. `"NotSpecified"` indicates that the public ssh port is closed on all nodes of the cluster if VNet is defined, else is open all public nodes. It can be this default value only during cluster creation time. After creation, it will be either enabled or disabled. |
 
 Please visit [this website]() for more details.
@@ -137,6 +134,16 @@ Please visit [this website](https://docs.microsoft.com/en-us/python/api/azureml-
 ### Outputs
 
 This action does not provide any outputs.
+
+### Environment variables
+
+Certain parameters are considered secrets and should therefore be passed as environment variables from your secrets, if you want to use custom values.
+
+| Environment variable        | Required | Allowed Values | Default | Description |
+| --------------------------- | -------- | -------------- | ------- | ----------- |
+| ADMIN_USER_NAME             |          | str            | null    | The name of the administrator user account which can be used to SSH into nodes. This parameter is AML Cluster specific. |
+| ADMIN_USER_PASSWORD         |          | str            | null    | The password of the administrator user account. This parameter is AML Cluster specific. |
+| ADMIN_USER_SSH_KEY          |          | str            | null    | The SSH public key of the administrator user account. This parameter is AML Cluster specific. |
 
 ### Other Azure Machine Learning Actions
 

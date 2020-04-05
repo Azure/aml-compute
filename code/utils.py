@@ -65,12 +65,12 @@ def create_aml_cluster(workspace, parameters):
         aml_config.subnet_name = parameters.get("subnet_name", None)
 
     print("::debug::Adding credentials to configuration if all required settings were provided")
-    if parameters.get("admin_username", None) and parameters.get("admin_user_password", None):
-        aml_config.admin_username = parameters.get("admin_username", None)
-        aml_config.admin_user_password = parameters.get("admin_user_password", None)
-    elif parameters.get("admin_username", None) and parameters.get("admin_user_ssh_key", None):
-        aml_config.admin_username = parameters.get("admin_username", None)
-        aml_config.admin_user_ssh_key = parameters.get("admin_user_ssh_key", None)
+    if os.environ.get("ADMIN_USER_NAME", None) and os.environ.get("ADMIN_USER_PASSWORD", None):
+        aml_config.admin_username = os.environ.get("ADMIN_USER_NAME", None)
+        aml_config.admin_user_password = os.environ.get("ADMIN_USER_PASSWORD", None)
+    elif os.environ.get("ADMIN_USER_NAME", None) and os.environ.get("ADMIN_USER_SSH_KEY", None):
+        aml_config.admin_username = os.environ.get("ADMIN_USER_NAME", None)
+        aml_config.admin_user_ssh_key = os.environ.get("ADMIN_USER_SSH_KEY", None)
 
     print("::debug::Creating compute target")
     # Default compute target name
