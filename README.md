@@ -82,7 +82,7 @@ Add this JSON output as [a secret](https://help.github.com/en/actions/configurin
 
 #### Parameter File
 
-The action tries to load a JSON file with the specified name in the `.cloud/.azure` folder in your repository, which specifies details of your Azure Machine Learning compute target. By default, the action expects a file with the name `compute.json`. If your JSON file has a different name, you can specify it with this input parameter. Currently, the action only supports Azure ML Clusters and AKS Clusters. Note that none of these values are required and in the absence, defaults will be created with the repo name.
+The action tries to load a JSON file in the `.cloud/.azure` folder in your repository, which specifies details of your Azure Machine Learning compute target. By default, the action expects a file with the name `compute.json`. If your JSON file has a different name, you can specify it with this input parameter. Currently, the action only supports Azure ML Clusters and AKS Clusters. Note that none of these values are required and in the absence, defaults will be created with the repo name.
 
 Sample files for AML and AKS clusters can be found in this repository in the folder `.cloud/.azure`. The JSON file can include the following parameters:
 
