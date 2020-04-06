@@ -78,7 +78,7 @@ def create_aml_cluster(workspace, parameters):
     aml_cluster = create_compute_target(
         workspace=workspace,
         name=parameters.get("name", repository_name),
-        provisioning_configuration=aml_config
+        config=aml_config
     )
     return aml_cluster
 
@@ -121,7 +121,7 @@ def create_aks_cluster(workspace, parameters):
     aks_cluster = create_compute_target(
         workspace=workspace,
         name=parameters.get("name", repository_name),
-        provisioning_configuration=aks_config
+        config=aks_config
     )
     return aks_cluster
 
