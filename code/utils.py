@@ -74,7 +74,7 @@ def create_aml_cluster(workspace, parameters):
 
     print("::debug::Creating compute target")
     # Default compute target name
-    repository_name = os.environ.get("GITHUB_REPOSITORY").split("/")[-1]
+    repository_name = os.environ.get("GITHUB_REPOSITORY").split("/")[-1][:16]
     aml_cluster = create_compute_target(
         workspace=workspace,
         name=parameters.get("name", repository_name),

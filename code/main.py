@@ -78,7 +78,7 @@ def main():
     # Loading compute target
     try:
         # Default compute target name
-        repository_name = os.environ.get("GITHUB_REPOSITORY").split("/")[-1]
+        repository_name = os.environ.get("GITHUB_REPOSITORY").split("/")[-1][:16]  # names can be max 16 characters
 
         print("::debug::Loading existing compute target")
         compute_target = ComputeTarget(
@@ -99,6 +99,7 @@ def main():
 
         print("::debug::Creating new compute target")
         compute_type = parameters.get("compute_type", "")
+        print(f"::debug::Compute type listed is{compute_type}")
         if compute_type == "amlcluster":
             compute_target = create_aml_cluster(
                 workspace=ws,

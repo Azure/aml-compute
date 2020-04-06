@@ -90,7 +90,7 @@ Sample files for AML and AKS clusters can be found in this repository in the fol
 
 | Parameter | Required | Allowed Values       | Default | Description |
 | --------- | -------- | -------------------- | ------- | ----------- |
-| name                            |  | str | <REPOSITORY_NAME> | The name of the of the Compute object to retrieve or create. |
+| name                            |  | str | <REPOSITORY_NAME> | The name of the of the Compute object to retrieve or create. max characters is 16 and it can include letters, digits and dashes. It must start with a letter and end with a letter or number |
 | compute_type                    | (only for creating compute target) | str: `"amlcluster"`, `"akscluster"` | - | Specifies the type of compute target that should be created by the action if a compute target with the specified name was not found. |
 
 ##### AML Cluster
