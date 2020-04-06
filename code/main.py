@@ -78,7 +78,7 @@ def main():
     # Loading compute target
     try:
         # Default compute target name
-        repository_name = os.environ.get("GITHUB_REPOSITORY").split("/")[-1][:16] # names can be max 16 characters
+        repository_name = os.environ.get("GITHUB_REPOSITORY").split("/")[-1][:16]  # names can be max 16 characters
 
         print("::debug::Loading existing compute target")
         compute_target = ComputeTarget(
