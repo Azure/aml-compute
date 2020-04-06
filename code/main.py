@@ -99,6 +99,7 @@ def main():
 
         print("::debug::Creating new compute target")
         compute_type = parameters.get("compute_type", "")
+        print(f"::debug::Compute type listed is{compute_type}")
         if compute_type == "amlcluster":
             compute_target = create_aml_cluster(
                 workspace=ws,
