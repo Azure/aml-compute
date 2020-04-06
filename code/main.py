@@ -105,7 +105,7 @@ def main():
                 parameters=parameters
             )
             print(f"::debug::Successfully created AML cluster: {compute_target.serialize()}")
-        if compute_type == "akscluster":
+        elif compute_type == "akscluster":
             compute_target = create_aks_cluster(
                 workspace=ws,
                 parameters=parameters
