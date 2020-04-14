@@ -10,8 +10,8 @@ jobs:
       with:
         path: "aml-compute"
     
-    - name: Check Out Repository
-      id: checkout_repository1
+    - name: Check Out Docs Repository
+      id: checkout_docs_repository
       uses: actions/checkout@v2
       with:
         repository: "machine-learning-apps/MLOps"
