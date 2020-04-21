@@ -30,13 +30,13 @@ jobs:
       uses: actions/checkout@v2
 
     # AML Workspace Action
-    - uses: Azure/aml-workspace
+    - uses: Azure/aml-workspace@v1
       id: aml_workspace
       with:
         azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
     # AML Compute Action
-    - uses: Azure/aml-compute
+    - uses: Azure/aml-compute@v1
       id: aml_compute
       with:
         # required inputs as secrets
