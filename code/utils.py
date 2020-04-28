@@ -1,4 +1,6 @@
 import os
+import json
+import jsonschema
 
 from azureml.core.compute import ComputeTarget, AmlCompute, AksCompute
 from azureml.exceptions import ComputeTargetException
@@ -10,17 +12,6 @@ class AMLConfigurationException(Exception):
 
 class AMLComputeException(Exception):
     pass
-
-
-def required_parameters_provided(parameters, keys, message="Required parameter(s) not found in your parameters file. Please provide a value for the following key(s): "):
-    missing_keys = []
-    for key in keys:
-        if key not in parameters:
-            err_msg = f"{message} {key}"
-            print(f"::error::{err_msg}")
-            missing_keys.append(key)
-    if len(missing_keys) > 0:
-        raise AMLConfigurationException(f"{message} {missing_keys}")
 
 
 def create_compute_target(workspace, name, config):
@@ -128,3 +119,20 @@ def create_aks_cluster(workspace, parameters):
 
 def mask_parameter(parameter):
     print(f"::add-mask::{parameter}")
+
+
+def load_json(file_path):
+    with open(file_path) as f:
+        json_object = json.load(f)
+    return json_object
+
+
+def validate_json(data, schema, input_name):
+    validator = jsonschema.Draft7Validator(schema)
+    errors = validator.iter_errors(data)
+    if len(list(errors)) > 0:
+        for error in errors:
+            print(f"::error::JSON validation error: {error}")
+        raise AMLConfigurationException(f"JSON validation error for '{input_name}'. Provided object does not match schema. Please check the output for more details.")
+    else:
+        print(f"::debug::JSON validation passed for '{input_name}'. Provided object does match schema.")
