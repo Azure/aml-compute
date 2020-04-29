@@ -82,12 +82,7 @@ def test_create_compute_target_invalid_name():
     """
     Unit test to check the create_compute_target function with invalid name
     """
-    workspace = Workspace(
-        subscription_id="",
-        resource_group="",
-        workspace_name="",
-        _disable_service_check=True
-    )
+    workspace = object()
     name = ""
     config = AmlCompute.provisioning_configuration(max_nodes=1)
     with pytest.raises(AMLConfigurationException):
@@ -102,12 +97,7 @@ def test_create_compute_target_invalid_config():
     """
     Unit test to check the create_compute_target function with invalid config
     """
-    workspace = Workspace(
-        subscription_id="",
-        resource_group="",
-        workspace_name="",
-        _disable_service_check=True
-    )
+    workspace = object()
     name = ""
     config = object()
     with pytest.raises(AMLConfigurationException):
@@ -134,12 +124,7 @@ def test_create_aml_cluster_invalid_parameters():
     """
     Unit test to check the create_aml_cluster function with invalid parameters
     """
-    workspace = Workspace(
-        subscription_id="",
-        resource_group="",
-        workspace_name="",
-        _disable_service_check=True
-    )
+    workspace = object()
     parameters = {
         "vnet_resource_group_name": "",
         "vnet_name": "",
@@ -169,12 +154,7 @@ def test_create_create_aks_cluster_invalid_workspace():
     """
     Unit test to check the create_aks_cluster function with invalid parameters
     """
-    workspace = Workspace(
-        subscription_id="",
-        resource_group="",
-        workspace_name="",
-        _disable_service_check=True
-    )
+    workspace = object()
     parameters = {
         "vnet_resource_group_name": "",
         "vnet_name": "",
