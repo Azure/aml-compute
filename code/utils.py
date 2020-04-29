@@ -139,3 +139,14 @@ def validate_json(data, schema, input_name):
         raise AMLConfigurationException(f"JSON validation error for '{input_name}'. Provided object does not match schema. Please check the output for more details.")
     else:
         print(f"::debug::JSON validation passed for '{input_name}'. Provided object does match schema.")
+
+
+def required_parameters_provided(parameters, keys, message="Required parameter not found in your parameters file. Please provide a value for the following key(s): "):
+    missing_keys = []
+    for key in keys:
+        if key not in parameters:
+            err_msg = f"{message} {key}"
+            missing_keys.append(key)
+    if len(missing_keys) > 0:
+        print(f"::error::{err_msg}{missing_keys}")
+        raise AMLConfigurationException(f"{message} {missing_keys}")

@@ -8,7 +8,7 @@ from azureml.core.authentication import ServicePrincipalAuthentication
 from adal.adal_error import AdalError
 from msrest.exceptions import AuthenticationError
 from json import JSONDecodeError
-from utils import AMLConfigurationException, create_aml_cluster, create_aks_cluster, mask_parameter, load_json, validate_json
+from utils import AMLConfigurationException, create_aml_cluster, create_aks_cluster, mask_parameter, load_json, validate_json, required_parameters_provided
 
 
 def main():
@@ -103,7 +103,7 @@ def main():
         required_parameters_provided(
             parameters=parameters,
             keys=["compute_type"],
-            message="Required parameter(s) not found in your parameters file for loading a compute target. Please provide a value for the following key(s): "
+            message="Required parameter(s) not found in your parameters file for creating a compute target. Please provide a value for the following key(s): "
         )
 
         print("::debug::Creating new compute target")

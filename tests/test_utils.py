@@ -5,7 +5,7 @@ import pytest
 myPath = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(myPath, "..", "code"))
 
-from utils import AMLConfigurationException, AMLComputeException, load_json, validate_json, create_compute_target, create_aml_cluster, create_aks_cluster
+from utils import AMLConfigurationException, AMLComputeException, load_json, validate_json, create_compute_target, create_aml_cluster, create_aks_cluster, required_parameters_provided
 from azureml.core import Workspace
 from azureml.core.compute import ComputeTarget, AmlCompute, AksCompute
 from azureml.exceptions import ComputeTargetException
@@ -174,4 +174,64 @@ def test_create_aml_cluster_invalid_parameters():
         assert create_aml_cluster(
             workspace=workspace,
             parameters=parameters
+        )
+
+
+def test_create_create_aks_cluster_invalid_workspace():
+    """
+    Unit test to check the create_aks_cluster function with invalid workspace
+    """
+    workspace = object()
+    parameters = {}
+    with pytest.raises(AMLConfigurationException):
+        assert create_aks_cluster(
+            workspace=workspace,
+            parameters=parameters
+        )
+
+
+def test_create_create_aks_cluster_invalid_workspace():
+    """
+    Unit test to check the create_aks_cluster function with invalid parameters
+    """
+    workspace = Workspace(
+        subscription_id="",
+        resource_group="",
+        workspace_name="",
+        _disable_service_check=True
+    )
+    parameters = {
+        "vnet_resource_group_name": "",
+        "vnet_name": "",
+        "subnet_name": 2
+    }
+    with pytest.raises(AMLConfigurationException):
+        assert create_aks_cluster(
+            workspace=workspace,
+            parameters=parameters
+        )
+
+
+def test_required_parameters_provided_valid_inputs():
+    """
+    Unit test to check the required_parameters_provided function with valid inputs
+    """
+    parameters = {}
+    keys = []
+    required_parameters_provided(
+        parameters=parameters,
+        keys=keys
+    )
+
+
+def test_required_parameters_provided_invalid_keys():
+    """
+    Unit test to check the required_parameters_provided function with invalid keys
+    """
+    parameters = {}
+    keys = ["test"]
+    with pytest.raises(AMLConfigurationException):
+        assert required_parameters_provided(
+            parameters=parameters,
+            keys=keys
         )
