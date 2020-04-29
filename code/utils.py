@@ -1,5 +1,4 @@
 import os
-import json
 import jsonschema
 
 from azureml.core.compute import ComputeTarget, AmlCompute, AksCompute
