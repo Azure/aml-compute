@@ -46,7 +46,7 @@ def main():
     except FileNotFoundError:
         print(f"::debug::Could not find parameter file in {parameters_file_path}. Please provide a parameter file in your repository if you do not want to use default settings (e.g. .cloud/.azure/compute.json).")
         parameters = {}
-    
+
     # Checking provided parameters
     print("::debug::Checking provided parameters")
     parameters_schema = load_json(file_path=os.path.join("code", "schemas", "compute_schema.json"))
