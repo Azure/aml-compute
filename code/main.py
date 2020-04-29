@@ -8,7 +8,8 @@ from azureml.core.authentication import ServicePrincipalAuthentication
 from adal.adal_error import AdalError
 from msrest.exceptions import AuthenticationError
 from json import JSONDecodeError
-from utils import AMLConfigurationException, create_aml_cluster, create_aks_cluster, mask_parameter, load_json, validate_json, required_parameters_provided
+from utils import AMLConfigurationException, create_aml_cluster, create_aks_cluster, mask_parameter, validate_json, required_parameters_provided
+from schemas import azure_credentials_schema, parameters_schema
 
 
 def main():
@@ -23,7 +24,6 @@ def main():
 
     # Checking provided parameters
     print("::debug::Checking provided parameters")
-    azure_credentials_schema = load_json(file_path=os.path.join("code", "schemas", "azure_credential_schema.json"))
     validate_json(
         data=azure_credentials,
         schema=azure_credentials_schema,
@@ -42,14 +42,14 @@ def main():
     parameters_file = os.environ.get("INPUT_PARAMETERS_FILE", default="compute.json")
     parameters_file_path = os.path.join(".cloud", ".azure", parameters_file)
     try:
-        parameters = load_json(file_path=parameters_file_path)
+        with open(parameters_file_path) as f:
+            parameters = json.load(f)
     except FileNotFoundError:
         print(f"::debug::Could not find parameter file in {parameters_file_path}. Please provide a parameter file in your repository if you do not want to use default settings (e.g. .cloud/.azure/compute.json).")
         parameters = {}
 
     # Checking provided parameters
     print("::debug::Checking provided parameters")
-    parameters_schema = load_json(file_path=os.path.join("code", "schemas", "compute_schema.json"))
     validate_json(
         data=parameters,
         schema=parameters_schema,

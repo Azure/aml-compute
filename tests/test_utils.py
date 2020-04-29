@@ -5,31 +5,11 @@ import pytest
 myPath = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(myPath, "..", "code"))
 
-from utils import AMLConfigurationException, AMLComputeException, load_json, validate_json, create_compute_target, create_aml_cluster, create_aks_cluster, required_parameters_provided
+from utils import AMLConfigurationException, AMLComputeException, validate_json, create_compute_target, create_aml_cluster, create_aks_cluster, required_parameters_provided
+from schemas import azure_credentials_schema, parameters_schema
 from azureml.core import Workspace
 from azureml.core.compute import ComputeTarget, AmlCompute, AksCompute
 from azureml.exceptions import ComputeTargetException
-
-
-def test_load_json_valid_input():
-    """
-    Unit test to check the load_json function with valid input
-    """
-    file_path = os.path.join("code", "schemas", "azure_credential_schema.json")
-    json_object = load_json(
-        file_path=file_path
-    )
-    assert type(json_object) == dict
-
-
-def test_load_json_invalid_input():
-    """
-    Unit test to check the load_json function with invalid input
-    """
-    with pytest.raises(FileNotFoundError):
-        assert load_json(
-            file_path=""
-        )
 
 
 def test_validate_json_valid_inputs():
@@ -43,9 +23,7 @@ def test_validate_json_valid_inputs():
         "tenantId": ""
     }
     schema_path = os.path.join("code", "schemas", "azure_credential_schema.json")
-    schema_object = load_json(
-        file_path=schema_path
-    )
+    schema_object = azure_credentials_schema
     validate_json(
         data=json_object,
         schema=schema_object,
@@ -62,10 +40,7 @@ def test_validate_json_invalid_json():
         "clientSecret": "",
         "subscriptionId": ""
     }
-    schema_path = os.path.join("code", "schemas", "azure_credential_schema.json")
-    schema_object = load_json(
-        file_path=schema_path
-    )
+    schema_object = azure_credentials_schema
     with pytest.raises(AMLConfigurationException):
         assert validate_json(
             data=json_object,
