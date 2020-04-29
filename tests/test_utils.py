@@ -7,7 +7,6 @@ sys.path.insert(0, os.path.join(myPath, "..", "code"))
 
 from utils import AMLConfigurationException, AMLComputeException, validate_json, create_compute_target, create_aml_cluster, create_aks_cluster, required_parameters_provided
 from schemas import azure_credentials_schema, parameters_schema
-from azureml.core import Workspace
 from azureml.core.compute import ComputeTarget, AmlCompute, AksCompute
 from azureml.exceptions import ComputeTargetException
 
