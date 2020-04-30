@@ -106,6 +106,8 @@ Sample files for AML and AKS clusters can be found in this repository in the fol
 | vnet_name                       |          | str | null | The name of the virtual network. |
 | subnet_name                     |          | str | null | The name of the subnet inside the VNet. |
 | remote_login_port_public_access |          | str: `"Enabled"`, `"Disabled"`, `"NotSpecified"` | `"NotSpecified"` | State of the public SSH port. `"Disabled"` indicates that the public ssh port is closed on all nodes of the cluster. `"Enabled"` indicates that the public ssh port is open on all nodes of the cluster. `"NotSpecified"` indicates that the public ssh port is closed on all nodes of the cluster if VNet is defined, else is open all public nodes. It can be this default value only during cluster creation time. After creation, it will be either enabled or disabled. |
+| identity_type                   |          | str: `"SystemAssigned"`, `"UserAssigned"` | null | Specifies the type of identity that should be assigned to the AML Cluster. Supported is SystemAssigned or UserAssigned identity. |
+| identity_id                     |          | list[ str ] | null | User assigned identities. |
 
 Please visit [this website]() for more details.
 

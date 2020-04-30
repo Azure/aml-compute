@@ -84,6 +84,15 @@ parameters_schema = {
             "description": "State of the public SSH port.",
             "pattern": "Enabled|Disabled|NotSpecified"
         },
+        "identity_type": {
+            "type": "string",
+            "description": "Specifies the type of identity that should be assigned to the AML Cluster. Supported is SystemAssigned or UserAssigned identity.",
+            "pattern": "SystemAssigned|UserAssigned"
+        },
+        "identity_id": {
+            "type": "array",
+            "description": "User assigned identities."
+        },
         "agent_count": {
             "type": "integer",
             "description": "The number of agents (VMs) to host containers.",
