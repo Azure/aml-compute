@@ -64,7 +64,7 @@ def create_aml_cluster(workspace, parameters):
     elif os.environ.get("ADMIN_USER_NAME", None) is not None and os.environ.get("ADMIN_USER_SSH_KEY", None) is not None:
         aml_config.admin_username = os.environ.get("ADMIN_USER_NAME", None)
         aml_config.admin_user_ssh_key = os.environ.get("ADMIN_USER_SSH_KEY", None)
-    
+
     print("::debug::Adding identity settings to configuration if all required settings were provided")
     if parameters.get("identity_type", None) == "UserAssigned" and parameters.get("identity_id", None) is not None:
         aml_config.identity_type = parameters.get("identity_type", None)
