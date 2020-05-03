@@ -5,10 +5,9 @@ import pytest
 myPath = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(myPath, "..", "code"))
 
-from utils import AMLConfigurationException, AMLComputeException, validate_json, create_compute_target, create_aml_cluster, create_aks_cluster, required_parameters_provided
-from schemas import azure_credentials_schema, parameters_schema
-from azureml.core.compute import ComputeTarget, AmlCompute, AksCompute
-from azureml.exceptions import ComputeTargetException
+from utils import AMLConfigurationException, validate_json, create_compute_target, create_aml_cluster, create_aks_cluster, required_parameters_provided
+from schemas import azure_credentials_schema
+from azureml.core.compute import AmlCompute
 
 
 def test_validate_json_valid_inputs():
@@ -21,7 +20,6 @@ def test_validate_json_valid_inputs():
         "subscriptionId": "",
         "tenantId": ""
     }
-    schema_path = os.path.join("code", "schemas", "azure_credential_schema.json")
     schema_object = azure_credentials_schema
     validate_json(
         data=json_object,
@@ -106,6 +104,7 @@ def test_create_compute_target_invalid_config():
             config=config
         )
 
+
 def test_create_aml_cluster_invalid_workspace():
     """
     Unit test to check the create_aml_cluster function with invalid workspace
@@ -149,7 +148,7 @@ def test_create_create_aks_cluster_invalid_workspace():
         )
 
 
-def test_create_create_aks_cluster_invalid_workspace():
+def test_create_create_aks_cluster_invalid_parameters():
     """
     Unit test to check the create_aks_cluster function with invalid parameters
     """
