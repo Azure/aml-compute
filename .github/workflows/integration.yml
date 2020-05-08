@@ -20,7 +20,6 @@ jobs:
 
       # create or connect to compute
       - name: Connect or Create Compute AML
-        if: steps.ws_connect.outputs.status == 'success'
         id: ws_aml_compute
         uses: ./
         with:
@@ -29,7 +28,6 @@ jobs:
       
       # create or connect to compute
       - name: Connect or Create Compute AKS
-        if: steps.ws_connect.outputs.status == 'success'
         id: ws_aks_compute
         uses: ./
         with:
