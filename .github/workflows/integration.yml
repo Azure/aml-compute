@@ -1,5 +1,5 @@
 name: Integration Test
-on: [push]
+on: [push , pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -7,10 +7,29 @@ jobs:
       - name: Check Out Repository
         id: checkout_repository
         uses: actions/checkout@master
-      
-      - name: Self test
-        id: selftest
-        uses: azure/aml-compute@master
+        with:
+          ref: ${{github.ref}}
+
+      # create or connect to a new Workspace
+      - name: Connect or Create Workspace
+        id: ws_connect
+        uses: azure/aml-workspace@v1
         with:
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-        continue-on-error: true
+          parameters_file: "test/test_workspace.json"
+
+      # create or connect to compute
+      - name: Connect or Create Compute AML
+        id: ws_aml_compute
+        uses: ./
+        with:
+          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          parameters_file: "test/test_aml_compute.json"
+      
+      # create or connect to compute
+      - name: Connect or Create Compute AKS
+        id: ws_aks_compute
+        uses: ./
+        with:
+          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          parameters_file: "test/test_aks_compute.json"
