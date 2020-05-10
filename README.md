@@ -97,7 +97,7 @@ Sample files for AML and AKS clusters can be found in this repository in the fol
 
 | Parameter | Required | Allowed Values       | Default | Description |
 | --------- | -------- | -------------------- | ------- | ----------- |
-| vm_size                         |          | str: [`"Basic_A0"`, `"Standard_DS3_v2"`, etc.](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2019-07-01/virtualMachines?toc=%2Fen-us%2Fazure%2Fazure-resource-manager%2Ftoc.json&bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#hardwareprofile-object) | `"Standard_NC6"` | The size of agent VMs. Note that not all sizes are available in all regions. |
+| vm_size                         |          | str: [`"Basic_A0"`, `"Standard_DS3_v2"`, etc.](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2019-07-01/virtualMachines?toc=%2Fen-us%2Fazure%2Fazure-resource-manager%2Ftoc.json&bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#hardwareprofile-object) | `"Standard_DS3_v2"` | The size of agent VMs. Note that not all sizes are available in all regions. |
 | vm_priority                     |          | str: `"dedicated"`, `"lowpriority"` | `"dedicated"` | The VM priority. |
 | min_nodes                       |          | int: [0, inf[ | 0 | The minimum number of nodes to use on the cluster. |
 | max_nodes                       |          | int: [1, inf[ | 4 | The maximum number of nodes to use on the cluster. |
