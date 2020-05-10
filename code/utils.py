@@ -41,7 +41,7 @@ def create_compute_target(workspace, name, config):
 def create_aml_cluster(workspace, parameters):
     print("::debug::Creating aml cluster configuration")
     aml_config = AmlCompute.provisioning_configuration(
-        vm_size=parameters.get("vm_size", None),
+        vm_size=parameters.get("vm_size", "Standard_DS3_v2"),
         vm_priority=parameters.get("vm_priority", "dedicated"),
         min_nodes=parameters.get("min_nodes", 0),
         max_nodes=parameters.get("max_nodes", 4),
@@ -85,7 +85,7 @@ def create_aks_cluster(workspace, parameters):
     print("::debug::Creating aks cluster configuration")
     aks_config = AksCompute.provisioning_configuration(
         agent_count=parameters.get("agent_count", None),
-        vm_size=parameters.get("vm_size", None),
+        vm_size=parameters.get("vm_size", "Standard_D3_v2"),
         location=parameters.get("location", None),
         service_cidr=parameters.get("service_cidr", None),
         dns_service_ip=parameters.get("dns_service_ip", None),
