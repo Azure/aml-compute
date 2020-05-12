@@ -25,10 +25,10 @@ def create_compute_target(workspace, name, config):
         compute_target.wait_for_completion(show_output=True)
     except AttributeError as exception:
         print(f"::error::Could not create compute target with specified parameters: {exception}")
-        raise AMLConfigurationException(f"Could not create compute target with specified parameters. Please review the provided parameters.")
+        raise AMLConfigurationException("Could not create compute target with specified parameters. Please review the provided parameters.")
     except ComputeTargetException as exception:
         print(f"::error::Could not create compute target with specified parameters: {exception}")
-        raise AMLConfigurationException(f"Could not create compute target with specified parameters. Please review the provided parameters.")
+        raise AMLConfigurationException("Could not create compute target with specified parameters. Please review the provided parameters.")
 
     # Checking state of compute target
     print("::debug::Checking state of compute target")
