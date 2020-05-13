@@ -1,19 +1,34 @@
 ![Integration Test](https://github.com/Azure/aml-compute/workflows/Integration%20Test/badge.svg?branch=master&event=push)
 ![Lint and Test](https://github.com/Azure/aml-compute/workflows/Lint%20and%20Test/badge.svg?branch=master&event=push)
 
-# Azure Machine Learning Compute Action
+# GitHub Action for creating compute for Azure Machine Learning 
 
 ## Usage
 
-The Azure Machine Learning Compute action will allow you to create a new compute target or check whether the specified compute target is available so you can later run your Machine Learning experiments or deploy your models remotely. If the compute target exists, it will just connect to it, otherwise the action can create a new compute target based on the provided parameters. Currently, the action only supports Azure ML Clusters and AKS Clusters. You will need to have azure credentials that allow you to create and/or connect to a workspace.
+The actions for creating compute for Azure Machine Learning will allow you to create a new compute target on [Azure Machine Learning](https://azure.microsoft.com/en-us/services/machine-learning/) using GitHub Actions.
 
-This action requires an AML workspace to be created or attached to via the [aml-workspace](https://github.com/Azure/aml-workspace) action.
+Get started today with a [free Azure account](https://azure.com/free/open-source)!
 
-## Template repositories
+This repository contains GitHub Action for creating and connecting to compute for Azure Machine Learning, so you can later train your machine learning models or deploy your models remotely. If the compute target exists, it will just connect to it, otherwise the action can create a new compute target based on the provided parameters. Currently, the action only supports Azure ML Clusters and AKS Clusters. 
 
-This action is one in a series of actions that can be used to setup an ML Ops process. Examples of these can be found at
-1. Simple example: [ml-template-azure](https://github.com/machine-learning-apps/ml-template-azure) and
-2. Comprehensive example: [aml-template](https://github.com/Azure/aml-template).
+
+## Dependencies on other GitHub Actions
+* [Checkout](https://github.com/actions/checkout) Checkout your Git repository content into GitHub Actions agent.
+* [aml-workspace](https://github.com/Azure/aml-workspace) This action requires an Azure Machine Learning workspace to be present. You can either create a new one or re-use an existing one using the action. 
+
+
+## Create Azure Machine Learning and deploy an machine learning model using GitHub Actions
+
+This action is one in a series of actions that can be used to setup an ML Ops process. **We suggest getting started with one of our template repositories**, which will allow you to create an ML Ops process in less than 5 minutes.
+
+1. **Simple template repository: [ml-template-azure](https://github.com/machine-learning-apps/ml-template-azure)**
+
+    Go to this template and follow the getting started guide to setup an ML Ops process within minutes and learn how to use the Azure       Machine Learning GitHub Actions in combination. This template demonstrates a very simple process for training and deploying machine     learning models.
+
+2. **Advanced template repository: [aml-template](https://github.com/Azure/aml-template)**
+
+    This template demonstrates how approval processes can be included in the process and how training and deployment workflows can be       splitted. It also shows how workflows (e.g. deployment) can be triggered from pull requests. More enhancements will be added to this template in the future to make it more enterprise ready.
+
 
 ### Example workflow
 
@@ -50,9 +65,9 @@ jobs:
 | Input | Required | Default | Description |
 | ----- | -------- | ------- | ----------- |
 | azure_credentials | x | - | Output of `az ad sp create-for-rbac --name <your-sp-name> --role contributor --scopes /subscriptions/<your-subscriptionId>/resourceGroups/<your-rg> --sdk-auth`. This should be stored in your secrets |
-| parameters_file |  | `"compute.json"` | JSON file in the `.cloud/.azure` folder specifying your Azure Machine Learning compute target details. |
+| parameters_file |  | `"compute.json"` | We expect a JSON file in the `.cloud/.azure` folder in root of your repository specifying your Azure Machine Learning compute target details. If you have want to provide these details in a file other than "compute.json" you need to provide this input in the action. |
 
-#### Azure Credentials
+#### azure_credentials (Azure Credentials)
 
 Azure credentials are required to connect to your Azure Machine Learning Workspace. These may have been created for an action you are already using in your repository, if so, you can skip the steps below.
 
@@ -80,7 +95,7 @@ This will generate the following JSON output:
 
 Add this JSON output as [a secret](https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets) with the name `AZURE_CREDENTIALS` in your GitHub repository.
 
-#### Parameter File
+#### parameters_file (Parameter File)
 
 The action tries to load a JSON file in the `.cloud/.azure` folder in your repository, which specifies details of your Azure Machine Learning compute target. By default, the action is looking for a file with the name `compute.json`. If your JSON file has a different name, you can specify it with this input parameter. Currently, the action only supports Azure ML Clusters and AKS Clusters. Note that none of these values are required and in the absence, defaults will be created with the repo name.
 
