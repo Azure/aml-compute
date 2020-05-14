@@ -1,7 +1,7 @@
 ![Integration Test](https://github.com/Azure/aml-compute/workflows/Integration%20Test/badge.svg?branch=master&event=push)
 ![Lint and Test](https://github.com/Azure/aml-compute/workflows/Lint%20and%20Test/badge.svg?branch=master&event=push)
 
-# GitHub Action for creating compute for Azure Machine Learning 
+# GitHub Action for creating compute targets for Azure Machine Learning 
 
 ## Usage
 
@@ -30,7 +30,7 @@ This action is one in a series of actions that can be used to setup an ML Ops pr
     This template demonstrates how approval processes can be included in the process and how training and deployment workflows can be       splitted. It also shows how workflows (e.g. deployment) can be triggered from pull requests. More enhancements will be added to this template in the future to make it more enterprise ready.
 
 
-### Example workflow
+### Example workflow for creating compute targets for Azure Machine Learning 
 
 ```yaml
 name: My Workflow
