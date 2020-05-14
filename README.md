@@ -9,7 +9,7 @@ The actions for creating compute for Azure Machine Learning will allow you to cr
 
 Get started today with a [free Azure account](https://azure.com/free/open-source)!
 
-This repository contains GitHub Action for creating and connecting to compute for Azure Machine Learning, so you can later train your machine learning models or deploy your models remotely. If the compute target exists, it will just connect to it, otherwise the action can create a new compute target based on the provided parameters. Currently, the action only supports Azure ML Clusters and AKS Clusters. 
+This repository contains a GitHub Action for creating and connecting to Azure Machine Learning compute resources, so you can later train or deploy machine learning models models remotely. If the compute target exists, it will connect to it, otherwise the action can create a new compute target based on the provided parameters. Currently, the action only supports Azure ML Clusters and AKS Clusters. 
 
 
 ## Dependencies on other GitHub Actions
@@ -17,7 +17,7 @@ This repository contains GitHub Action for creating and connecting to compute fo
 * [aml-workspace](https://github.com/Azure/aml-workspace) This action requires an Azure Machine Learning workspace to be present. You can either create a new one or re-use an existing one using the action. 
 
 
-## Create Azure Machine Learning and deploy an machine learning model using GitHub Actions
+## Utilize GitHub Actions and Azure Machine Learning to deploy a machine learning model
 
 This action is one in a series of actions that can be used to setup an ML Ops process. **We suggest getting started with one of our template repositories**, which will allow you to create an ML Ops process in less than 5 minutes.
 
@@ -27,7 +27,7 @@ This action is one in a series of actions that can be used to setup an ML Ops pr
 
 2. **Advanced template repository: [aml-template](https://github.com/Azure/aml-template)**
 
-    This template demonstrates how approval processes can be included in the process and how training and deployment workflows can be       splitted. It also shows how workflows (e.g. deployment) can be triggered from pull requests. More enhancements will be added to this template in the future to make it more enterprise ready.
+    This template demonstrates how the actions can be extended to include the normal pull request approval process and how training and deployment workflows can be split. More enhancements will be added to this template in the future to make it more enterprise ready.
 
 
 ### Example workflow for creating compute targets for Azure Machine Learning 
