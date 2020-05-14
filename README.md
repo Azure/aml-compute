@@ -17,7 +17,7 @@ This repository contains a GitHub Action for creating and connecting to Azure Ma
 * [aml-workspace](https://github.com/Azure/aml-workspace) This action requires an Azure Machine Learning workspace to be present. You can either create a new one or re-use an existing one using the action. 
 
 
-## Utilize GitHub Actions and Azure Machine Learning to deploy a machine learning model
+## Utilize GitHub Actions and Azure Machine Learning to train and deploy a machine learning model
 
 This action is one in a series of actions that can be used to setup an ML Ops process. **We suggest getting started with one of our template repositories**, which will allow you to create an ML Ops process in less than 5 minutes.
 
