@@ -17,14 +17,6 @@ jobs:
         with:
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
           parameters_file: "test/test_workspace.json"
-
-      # create or connect to compute
-      - name: Connect or Create Compute AML
-        id: ws_aml_compute
-        uses: ./
-        with:
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          parameters_file: "test/test_aml_compute.json"
       
       # create or connect to compute
       - name: Connect or Create Compute AKS
