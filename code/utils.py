@@ -13,7 +13,7 @@ class AMLComputeException(Exception):
     pass
 
 
-def attach_aks_clust(parameters,ws):
+def attach_aks_clust(parameters, ws):
     compute_type = parameters.get("compute_type", "")
     resource_grp= 'attachaks'
     if resource_grp=='attachaks':
