@@ -15,7 +15,7 @@ class AMLComputeException(Exception):
 
 def attach_aks_clust(parameters,ws):
     compute_type = parameters.get("compute_type", "")
-    resource_grp= ''
+    resource_grp= 'attachaks'
     if compute_type=='akscluster':
         compute_name=parameters.get("name", None)
         try:
@@ -23,6 +23,7 @@ def attach_aks_clust(parameters,ws):
             deployment_target= ComputeTarget.attach(ws, compute_name, attach_config)
             deployment_target.wait_for_completion(show_output = True)
             print(f"::debug::Attached compute target with same name in resource group outside the ML workspace")
+            print("works fine----------------------------")
             return 'attached'
         except ComputeTargetException:
             return
