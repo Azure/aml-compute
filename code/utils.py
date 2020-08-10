@@ -28,7 +28,8 @@ def attach_aks_clust(parameters, ws):
             return 'attached'
         except ComputeTargetException:
             return
-
+        
+        
 def create_compute_target(workspace, name, config):
     # Creating compute target
     print("::debug::Creating compute target")
