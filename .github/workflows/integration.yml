@@ -25,3 +25,4 @@ jobs:
         with:
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
           parameters_file: "test/test_aks_compute.json"
+          resource_grp: "attachaks"
