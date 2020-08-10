@@ -8,7 +8,7 @@ from azureml.core.authentication import ServicePrincipalAuthentication
 from adal.adal_error import AdalError
 from msrest.exceptions import AuthenticationError
 from json import JSONDecodeError
-from utils import AMLConfigurationException, create_aml_cluster, create_aks_cluster, mask_parameter, validate_json, required_parameters_provided
+from utils import AMLConfigurationException, create_aml_cluster, create_aks_cluster, mask_parameter, validate_json, required_parameters_provided, create_compute_target
 from schemas import azure_credentials_schema, parameters_schema
 
 
