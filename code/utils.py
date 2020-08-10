@@ -24,12 +24,11 @@ def attach_aks_clust(parameters, ws):
             attach_config = AksCompute.attach_configuration(resource_group=resource_grp, cluster_name=compute_name)
             deployment_target = ComputeTarget.attach(ws, compute_name, attach_config)
             deployment_target.wait_for_completion(show_output=True)
-            print(f"::debug::Attached compute target with same name in resource group outside the ML workspace",compute_name)
             return 'attached'
         except ComputeTargetException:
             return
-        
-        
+
+
 def create_compute_target(workspace, name, config):
     # Creating compute target
     print("::debug::Creating compute target")
