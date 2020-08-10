@@ -106,8 +106,8 @@ def main():
         print(f"::debug::Found compute target with same name. Not updating the compute target: {compute_target.serialize()}")
     except ComputeTargetException:
         print("::debug::Could not find existing compute target with provided name")
-        status=attach_aks_clust(parameters,ws)
-        if status=='attached':
+        status = attach_aks_clust(parameters,ws)
+        if status == 'attached':
             return
         # Checking provided parameters
         print("::debug::Checking provided parameters")
