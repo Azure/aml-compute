@@ -16,7 +16,7 @@ class AMLComputeException(Exception):
 def attach_aks_clust(parameters, ws):
     compute_type = parameters.get("compute_type", "")
     resource_grp = os.environ.get("INPUT_RESOURCE_GRP", default=None)
-    if resource_grp == None:
+    if resource_grp is None:
         return
     if compute_type == 'akscluster':
         compute_name = parameters.get("name", None)
