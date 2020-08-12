@@ -24,8 +24,10 @@ def attach_aks_clust(parameters, ws):
             attach_config = AksCompute.attach_configuration(resource_group=resource_grp, cluster_name=compute_name)
             deployment_target = ComputeTarget.attach(ws, compute_name, attach_config)
             deployment_target.wait_for_completion(show_output=True)
+            print("::debug::Successfully attached the given cluster with workspace")
             return 'attached'
         except ComputeTargetException:
+            print("::debug::Could not find existing compute target with provided name inside given resource group")
             return
 
 
