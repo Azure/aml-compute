@@ -1,7 +1,13 @@
 ![Integration Test](https://github.com/Azure/aml-compute/workflows/Integration%20Test/badge.svg?branch=master&event=push)
 ![Lint and Test](https://github.com/Azure/aml-compute/workflows/Lint%20and%20Test/badge.svg?branch=master&event=push)
 
-# GitHub Action for creating compute targets for Azure Machine Learning 
+# GitHub Action for creating compute targets for Azure Machine Learning
+
+## Deprecation notice
+
+This Action is deprecated. Instead, consider using the [CLI (v2)](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli) to manage and interact with Azure Machine Learning compute in GitHub Actions.
+
+**Important:** The CLI (v2) is not recommended for production use while in preview.
 
 ## Usage
 
