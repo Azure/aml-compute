@@ -8,7 +8,7 @@ from azureml.core.authentication import ServicePrincipalAuthentication
 from adal.adal_error import AdalError
 from msrest.exceptions import AuthenticationError
 from json import JSONDecodeError
-from utils import AMLConfigurationException, create_aml_cluster, create_aks_cluster, mask_parameter, validate_json, required_parameters_provided
+from utils import AMLConfigurationException, create_aml_cluster, create_aks_cluster, mask_parameter, validate_json, required_parameters_provided, attach_aks_clust
 from schemas import azure_credentials_schema, parameters_schema
 
 
@@ -105,8 +105,10 @@ def main():
         )
         print(f"::debug::Found compute target with same name. Not updating the compute target: {compute_target.serialize()}")
     except ComputeTargetException:
-        print("::debug::Could not find existing compute target with provided name")
-
+        print("::debug::Could not find existing compute target with provided name associated with the workspace")
+        status = attach_aks_clust(parameters, ws)
+        if status == 'attached':
+            return
         # Checking provided parameters
         print("::debug::Checking provided parameters")
         required_parameters_provided(

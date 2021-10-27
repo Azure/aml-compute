@@ -13,6 +13,24 @@ class AMLComputeException(Exception):
     pass
 
 
+def attach_aks_clust(parameters, ws):
+    compute_type = parameters.get("compute_type", "")
+    resource_grp = os.environ.get("INPUT_RESOURCE_GRP", default=None)
+    if resource_grp is None:
+        return
+    if compute_type == 'akscluster':
+        compute_name = parameters.get("name", None)
+        try:
+            attach_config = AksCompute.attach_configuration(resource_group=resource_grp, cluster_name=compute_name)
+            deployment_target = ComputeTarget.attach(ws, compute_name, attach_config)
+            deployment_target.wait_for_completion(show_output=True)
+            print("::debug::Successfully attached the given cluster with workspace")
+            return 'attached'
+        except ComputeTargetException:
+            print("::debug::Could not find existing compute target with provided name inside given resource group")
+            return
+
+
 def create_compute_target(workspace, name, config):
     # Creating compute target
     print("::debug::Creating compute target")

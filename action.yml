@@ -9,6 +9,10 @@ inputs:
     description: "JSON file including the parameters of the compute."
     required: true
     default: "compute.json"
+  resource_grp:
+    description: "resource group required in case aks cluster needs to be attached"
+    required: false
+    default: ""  
 branding:
   icon: "chevron-up"
   color: "blue"
