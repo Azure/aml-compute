@@ -33,3 +33,17 @@ jobs:
         with:
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
           parameters_file: "test/test_aks_compute.json"
+
+      - uses: azure/login@v1.1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
+      - name: Azure CLI script
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.0.72
+          inlineScript: |
+            az extension add -n azure-cli-ml
+            az ml folder attach -w gha_and_aml_workspace  -g gha_and_aml_rg
+            az ml computetarget delete --name "aks-intTest"
+            az ml computetarget delete --name "aml-intTest"
